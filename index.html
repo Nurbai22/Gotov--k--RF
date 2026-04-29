@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Готов к РФ - Подготовка к жизни в России</title>
+<style>
+:root {
+--primary: #2563eb;
+--primary-dark: #1d4ed8;
+--secondary: #f59e0b;
+--bg: #f3f4f6;
+--surface: #ffffff;
+--text: #1f2937;
+--text-secondary: #6b7280;
+--border: #e5e7eb;
+--shadow: 0 1px 3px rgba(0,0,0,0.1);
+--shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+--radius: 12px;
+--transition: all 0.3s ease;
+}
+[data-theme="dark"] {
+--bg: #111827;
+--surface: #1f2937;
+--text: #f9fafb;
+--text-secondary: #9ca3af;
+--border: #374151;
+--shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; transition: var(--transition); }
+.header { background: var(--surface); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
+.nav-container { max-width: 1400px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+.nav-controls { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+.btn { padding: 0.5rem 1.25rem; border: none; border-radius: var(--radius); cursor: pointer; font-size: 0.9rem; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 500; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+.btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--bg); }
+.icon-btn { width: 40px; height: 40px; border-radius: 50%; padding: 0; justify-content: center; background: var(--bg); border: 1px solid var(--border); cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+.icon-btn:hover { background: var(--primary); color: white; transform: rotate(15deg); }
+select { padding: 0.5rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font-size: 0.9rem; }
+.main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; min-height: calc(100vh - 80px); }
+.section { display: none; animation: fadeIn 0.5s; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.persistent-categories { margin-bottom: 3rem; }
+.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+.category-card { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); cursor: pointer; transition: var(--transition); border: 2px solid transparent; position: relative; overflow: hidden; }
+.category-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); transform: scaleX(0); transition: transform 0.3s; }
+.category-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.category-card:hover::before { transform: scaleX(1); }
+.category-card.active { border-color: var(--primary); background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+.category-card.active .category-desc { color: rgba(255,255,255,0.9); }
+.category-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.category-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 0.5rem; }
+.category-desc { color: var(--text-secondary); font-size: 0.85rem; }
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+.modal.active { display: flex; }
+.modal-content { background: var(--surface); padding: 2rem; border-radius: var(--radius); width: 90%; max-width: 450px; box-shadow: var(--shadow-lg); animation: slideIn 0.3s; max-height: 90vh; overflow-y: auto; }
+@keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.form-group { margin-bottom: 1.5rem; }
+label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-secondary); font-size: 0.9rem; }
+input { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 1rem; transition: var(--transition); }
+input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.error { color: #ef4444; font-size: 0.85rem; margin-top: 0.25rem; display: none; }
+.error.show { display: block; }
+.timeline-container { overflow-x: auto; padding: 2rem 0; position: relative; }
+.timeline { display: flex; gap: 2rem; padding: 2rem; min-width: max-content; position: relative; }
+.timeline::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); z-index: 0; }
+.timeline-event { background: var(--surface); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); min-width: 280px; position: relative; z-index: 1; cursor: pointer; transition: var(--transition); border: 2px solid transparent; }
+.timeline-event:hover { transform: scale(1.05); border-color: var(--primary); }
+.timeline-year { font-weight: bold; color: var(--primary); font-size: 1.25rem; margin-bottom: 0.5rem; }
+.timeline-title { font-weight: 600; margin-bottom: 0.5rem; }
+.timeline-desc { font-size: 0.9rem; color: var(--text-secondary); }
+.laws-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+.law-card { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); transition: var(--transition); border-left: 4px solid var(--primary); }
+.law-card:hover { transform: translateX(5px); box-shadow: var(--shadow-lg); }
+.law-number { font-size: 0.85rem; color: var(--primary); font-weight: bold; margin-bottom: 0.5rem; }
+.law-title { font-weight: bold; margin-bottom: 0.5rem; font-size: 1.1rem; }
+.law-content { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+.cities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+.city-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; }
+.city-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+.city-image { width: 100%; height: 220px; position: relative; overflow: hidden; background: linear-gradient(135deg, var(--primary), var(--secondary)); display:flex; align-items:center; justify-content:center; }
+.city-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.city-image-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 1.5rem 1rem 1rem; color: white; font-size: 1.5rem; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.city-info { padding: 1.5rem; }
+.city-name { font-size: 1.4rem; font-weight: bold; margin-bottom: 0.5rem; }
+.city-meta { color: var(--text-secondary); font-size: 0.9rem; }
+.city-detail-container { background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin-top: 2rem; position: relative; }
+.city-detail-header { position: relative; height: 450px; overflow: hidden; background: linear-gradient(135deg, var(--primary), var(--secondary)); display:flex; align-items:center; justify-content:center; }
+.city-detail-header img { width: 100%; height: 100%; object-fit: cover; }
+.city-detail-header-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%); padding: 4rem 2rem 2rem; color: white; }
+.city-detail-title { font-size: 3.5rem; font-weight: bold; margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+.city-detail-subtitle { font-size: 1.3rem; opacity: 0.9; font-weight: 300; }
+.city-detail-content { padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; }
+.city-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; margin-top: -6rem; position: relative; z-index: 10; }
+.city-stat-card { background: var(--surface); padding: 2rem; border-radius: var(--radius); text-align: center; box-shadow: var(--shadow-lg); border: 1px solid var(--border); transition: var(--transition); }
+.city-stat-card:hover { transform: translateY(-5px); }
+.city-stat-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+.city-stat-label { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+.city-stat-value { font-size: 1.4rem; font-weight: bold; color: var(--primary); }
+.city-section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
+.city-section:last-child { border-bottom: none; }
+.city-section-title { font-size: 1.8rem; color: var(--primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+.city-section-content { color: var(--text); line-height: 1.8; font-size: 1.1rem; }
+.city-sights-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+.city-sight-item { background: var(--bg); padding: 1.25rem; border-radius: var(--radius); display: flex; align-items: center; gap: 1rem; border: 1px solid var(--border); transition: var(--transition); }
+.city-sight-item:hover { border-color: var(--primary); transform: translateX(5px); }
+.city-sight-icon { font-size: 2rem; background: var(--surface); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow); }
+.test-container { background: var(--surface); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); max-width: 800px; margin: 2rem auto; }
+.question { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.question-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
+.answers { display: flex; flex-direction: column; gap: 0.75rem; }
+.answer-option { padding: 1rem; border: 2px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.75rem; }
+.answer-option:hover { border-color: var(--primary); background: var(--bg); }
+.answer-option.selected { border-color: var(--primary); background: rgba(37,99,235,0.1); }
+.answer-option.correct { border-color: #10b981; background: rgba(16,185,129,0.1); }
+.answer-option.wrong { border-color: #ef4444; background: rgba(239,68,68,0.1); }
+.certificate { background: linear-gradient(135deg, #f59e0b, #2563eb); color: white; padding: 3rem; border-radius: var(--radius); text-align: center; max-width: 800px; margin: 2rem auto; position: relative; overflow: hidden; }
+.certificate::before { content: '★'; position: absolute; top: 20px; left: 20px; font-size: 4rem; opacity: 0.2; }
+.certificate::after { content: '★'; position: absolute; bottom: 20px; right: 20px; font-size: 4rem; opacity: 0.2; }
+.cert-title { font-size: 2rem; font-weight: bold; margin-bottom: 1rem; }
+.cert-subtitle { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9; }
+.cert-name { font-size: 2.5rem; font-weight: bold; margin: 2rem 0; border-bottom: 2px solid white; display: inline-block; padding-bottom: 0.5rem; }
+.cert-details { margin-top: 2rem; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1rem; }
+.cert-item { background: rgba(255,255,255,0.2); padding: 1rem 2rem; border-radius: var(--radius); backdrop-filter: blur(10px); }
+.search-container { margin-bottom: 2rem; position: relative; }
+.search-input { width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); font-size: 1rem; }
+.search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
+.tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border); flex-wrap: wrap; }
+.tab { padding: 1rem 2rem; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: var(--transition); font-weight: 500; }
+.tab.active { border-bottom-color: var(--primary); color: var(--primary); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.russian-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+.russian-category-card { background: var(--surface); padding: 1.5rem; border-radius: var(--radius); cursor: pointer; border: 2px solid var(--border); transition: var(--transition); }
+.russian-category-card:hover { border-color: var(--primary); box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.russian-cat-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.russian-cat-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem; }
+.progress-container { margin: 1.5rem 0; padding: 1rem; background: var(--bg); border-radius: var(--radius); }
+.progress-bar { background: var(--border); border-radius: 10px; height: 12px; overflow: hidden; margin-top: 0.5rem; }
+.progress-fill { background: linear-gradient(90deg, var(--primary), var(--secondary)); height: 100%; transition: width 0.5s ease; border-radius: 10px; }
+.vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.vocab-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 1.25rem; transition: var(--transition); position: relative; }
+.vocab-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
+.vocab-word { font-size: 1.25rem; font-weight: bold; color: var(--primary); margin-bottom: 0.5rem; }
+.vocab-transliteration { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem; font-style: italic; }
+.vocab-translation { color: var(--text); font-size: 1rem; }
+.lesson-modal-content { max-width: 900px !important; max-height: 90vh; overflow-y: auto; }
+.lesson-section { margin: 2rem 0; padding: 1.5rem; background: var(--bg); border-radius: var(--radius); border-left: 4px solid var(--primary); }
+.lesson-section h3 { color: var(--primary); margin-bottom: 1rem; font-size: 1.3rem; }
+.lesson-section p { margin-bottom: 1rem; line-height: 1.8; }
+.lesson-section ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+.lesson-section li { margin-bottom: 0.5rem; }
+.example-box { background: var(--surface); padding: 1rem; border-radius: var(--radius); margin: 1rem 0; border: 1px solid var(--border); }
+.example-box .ru { font-weight: bold; color: var(--primary); }
+.example-box .tr { color: var(--text-secondary); font-size: 0.9rem; }
+.practice-area { margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-radius: var(--radius); }
+.vocab-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.vocab-tab { padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: var(--transition); background: var(--surface); }
+.vocab-tab:hover { border-color: var(--primary); }
+.vocab-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+.notification { position: fixed; bottom: 2rem; right: 2rem; background: var(--primary); color: white; padding: 1rem 2rem; border-radius: var(--radius); box-shadow: var(--shadow-lg); z-index: 2000; animation: fadeIn 0.3s; }
+.translate-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.5rem; cursor: pointer; font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; display: inline-flex; align-items: center; gap: 0.25rem; transition: var(--transition); }
+.translate-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+.translate-btn.loading { opacity: 0.6; pointer-events: none; }
+.translated-text { margin-top: 0.5rem; padding: 0.5rem; background: rgba(37,99,235,0.08); border-radius: 6px; font-size: 0.9rem; color: var(--text); border-left: 3px solid var(--primary); display: none; }
+.lang-indicator { position: fixed; top: 5rem; right: 1rem; background: var(--primary); color: white; padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.8rem; z-index: 50; opacity: 0; transition: opacity 0.5s; }
+.lang-indicator.show { opacity: 1; }
+.translator-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.5rem 2rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.translator-bar label { font-size: 0.85rem; color: var(--text-secondary); }
+.translator-status { font-size: 0.75rem; color: var(--text-secondary); margin-left: auto; }
+.translator-status.translating { color: var(--primary); }
+.translator-status.cached { color: #10b981; }
+@media (max-width: 768px) {
+.nav-container { padding: 1rem; }
+.main-container { padding: 1rem; }
+.dashboard-grid, .laws-grid, .cities-grid { grid-template-columns: 1fr; }
+.timeline { padding: 1rem; }
+.timeline-event { min-width: 250px; }
+.city-detail-title { font-size: 2.5rem; }
+.city-stats-grid { grid-template-columns: 1fr; margin-top: -3rem; }
+.city-detail-header { height: 300px; }
+.translator-bar { padding: 0.5rem 1rem; }
+}
+.hidden { display: none !important; }
+.text-center { text-align: center; }
+.mt-4 { margin-top: 2rem; }
+.mb-4 { margin-bottom: 2rem; }
+.back-btn { margin-bottom: 1.5rem; }
+.ruler-card { background: var(--bg); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; display: flex; gap: 1.5rem; align-items: flex-start; border: 1px solid var(--border); }
+.ruler-portrait { font-size: 4rem; }
+.ruler-achievements { margin-top: 0.5rem; padding-left: 1.5rem; }
+.event-detail { background: var(--surface); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-top: 2rem; }
+.history-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.history-tab { padding: 0.5rem 1.25rem; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 0.9rem; background: var(--surface); transition: var(--transition); }
+.history-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+</style>
+</head>
+<body>
+<div class="lang-indicator" id="langIndicator"></div>
+<header class="header">
+<div class="nav-container">
+<div class="logo"><span>🇷🇺</span><span id="appNameText">Готов к РФ</span></div>
+<div class="nav-controls" id="navControls"></div>
+</div>
+</header>
+<!-- Панель переводчика -->
+<div class="translator-bar" id="translatorBar">
+<label>🌐 Язык интерфейса:</label>
+<select id="uiLangSelect" onchange="translator.setLang(this.value)">
+<option value="ru">Русский (оригинал)</option>
+<option value="en">Английский</option>
+<option value="ky">Кыргызча</option>
+<option value="kk">Қазақша</option>
+<option value="uz">O'zbek</option>
+<option value="tg">Тоҷикӣ</option>
+<option value="hy">Հայերեն</option>
+<option value="az">Azərbaycan</option>
+<option value="tr">Türkçe</option>
+<option value="ar">العربية</option>
+<option value="zh">中文</option>
+<option value="fa">فارسی</option>
+<option value="uk">Українська</option>
+<option value="de">Deutsch</option>
+<option value="fr">Français</option>
+<option value="es">Español</option>
+</select>
+<span class="translator-status" id="translatorStatus">Готово</span>
+</div>
+<main class="main-container">
+<!-- Постоянные категории -->
+<div class="persistent-categories" id="persistentCategories">
+<h2 style="font-size:1.5rem;margin-bottom:1rem;color:var(--primary);" id="mainMenuTitle">Главное меню</h2>
+<div class="dashboard-grid">
+<div class="category-card" onclick="app.router.navigate('russian')" id="cat-russian">
+<div class="category-icon">📚</div>
+<div class="category-title" id="catRussianTitle">Русский язык</div>
+<div class="category-desc" id="catRussianDesc">15 тем грамматики + 800 слов</div>
+</div>
+<div class="category-card" onclick="app.router.navigate('history')" id="cat-history">
+<div class="category-icon">🏛️</div>
+<div class="category-title" id="catHistoryTitle">История России</div>
+<div class="category-desc" id="catHistoryDesc">Более 60 событий от Рюрика до наших дней</div>
+</div>
+<div class="category-card" onclick="app.router.navigate('laws')" id="cat-laws">
+<div class="category-icon">⚖️</div>
+<div class="category-title" id="catLawsTitle">Законы РФ</div>
+<div class="category-desc" id="catLawsDesc">Конституция, миграция, трудовое право</div>
+</div>
+<div class="category-card" onclick="app.router.navigate('cities')" id="cat-cities">
+<div class="category-icon">🏙️</div>
+<div class="category-title" id="catCitiesTitle">Города России</div>
+<div class="category-desc" id="catCitiesDesc">25 городов с подробной информацией</div>
+</div>
+<div class="category-card" onclick="app.router.navigate('tests')" id="cat-tests">
+<div class="category-icon">🎓</div>
+<div class="category-title" id="catTestsTitle">Тесты</div>
+<div class="category-desc" id="catTestsDesc">20 вопросов на каждую тему</div>
+</div>
+</div>
+</div>
+<!-- Раздел приветствия -->
+<section id="welcomeSection" class="section active">
+<div class="text-center" style="padding:4rem 2rem;">
+<h1 style="font-size:3rem;margin-bottom:1rem;color:var(--primary);" id="welcomeTitle">Добро пожаловать в «Готов к РФ»</h1>
+<p style="font-size:1.25rem;color:var(--text-secondary);max-width:600px;margin:0 auto 2rem;" id="welcomeDesc">Комплексная подготовка к жизни в России: язык, история, законы, города</p>
+<button class="btn btn-primary" onclick="app.showAuthModal()" style="font-size:1.1rem;padding:1rem 2rem;" id="startBtn">Начать обучение</button>
+</div>
+</section>
+<!-- Раздел русского языка -->
+<section id="russianSection" class="section">
+<button class="btn btn-secondary back-btn" onclick="app.router.navigate('')">← <span id="backText">Назад</span></button>
+<div class="tabs">
+<div class="tab active" onclick="app.russian.showTab('categories')" id="grammarTab">Грамматика</div>
+<div class="tab" onclick="app.russian.showTab('vocabulary')" id="vocabTab">800 слов</div>
+<div class="tab" onclick="app.russian.showTab('phrases')" id="phrasesTab">Разговорник</div>
+</div>
+<div id="russianCategories" class="tab-content active">
+<h2 style="font-size:2rem;margin-bottom:1rem;color:var(--primary);" id="russianCourseTitle">Курс русского языка</h2>
+<p style="margin-bottom:1rem;color:var(--text-secondary);" id="russianCourseDesc">Выберите тему для изучения</p>
+<div class="russian-grid" id="russianGrid"></div>
+<div id="progressContainer"></div>
+</div>
+<div id="russianVocabulary" class="tab-content">
+<h2 id="vocabTitle">800 самых важных слов</h2>
+<p style="margin-bottom:1.5rem;color:var(--text-secondary);" id="vocabDesc">Самые употребительные слова с переводом и транслитерацией</p>
+<div class="search-container"><span class="search-icon">🔍</span><input type="text" class="search-input" id="vocabSearch" placeholder="Поиск слова..." oninput="app.russian.searchVocab(this.value)"></div>
+<div class="vocab-tabs" id="vocabCategoryTabs"></div>
+<div class="vocab-grid" id="vocabGrid"></div>
+</div>
+<div id="russianPhrases" class="tab-content">
+<h2 id="phrasesTitle">Разговорник</h2>
+<p style="margin-bottom:1.5rem;color:var(--text-secondary);">Полезные фразы для жизни в России</p>
+<div class="vocab-tabs" id="phrasesCategoryTabs"></div>
+<div class="vocab-grid" id="phrasesGrid"></div>
+</div>
+</section>
+<!-- Раздел истории -->
+<section id="historySection" class="section">
+<button class="btn btn-secondary back-btn" onclick="app.router.navigate('')">← <span>Назад</span></button>
+<h2 style="font-size:2rem;margin-bottom:1rem;color:var(--primary);" id="historyTitle">История России</h2>
+<p style="margin-bottom:1rem;color:var(--text-secondary);">Прокрутите временную шкалу, чтобы изучить события</p>
+<div class="history-tabs" id="historyFilterTabs"></div>
+<div class="timeline-container"><div class="timeline" id="timeline"></div></div>
+<div id="eventDetail" style="display:none;"></div>
+</section>
+<!-- Раздел законов -->
+<section id="lawsSection" class="section">
+<button class="btn btn-secondary back-btn" onclick="app.router.navigate('')">← <span>Назад</span></button>
+<h2 style="font-size:2rem;margin-bottom:1.5rem;color:var(--primary);">Законы Российской Федерации</h2>
+<div class="search-container"><span class="search-icon">🔍</span><input type="text" class="search-input" id="lawsSearch" placeholder="Поиск по законам..." oninput="app.laws.search(this.value)"></div>
+<div class="tabs">
+<div class="tab active" onclick="app.laws.filter('all')">Все законы</div>
+<div class="tab" onclick="app.laws.filter('иностранцы')">Для иностранцев</div>
+<div class="tab" onclick="app.laws.filter('конституция')">Конституция</div>
+<div class="tab" onclick="app.laws.filter('миграция')">Миграция</div>
+<div class="tab" onclick="app.laws.filter('труд')">Трудовое право</div>
+<div class="tab" onclick="app.laws.filter('налоги')">Налоги</div>
+</div>
+<div class="laws-grid" id="lawsGrid"></div>
+</section>
+<!-- Раздел городов -->
+<section id="citiesSection" class="section">
+<button class="btn btn-secondary back-btn" onclick="app.router.navigate('')">← <span>Назад</span></button>
+<h2 style="font-size:2rem;margin-bottom:1.5rem;color:var(--primary);">Города России</h2>
+<div class="search-container"><span class="search-icon">🔍</span><input type="text" class="search-input" id="citiesSearch" placeholder="Поиск города..." oninput="app.cities.search(this.value)"></div>
+<div class="cities-grid" id="citiesGrid"></div>
+<div id="cityDetail" style="display:none;"></div>
+</section>
+<!-- Раздел с тестами -->
+<section id="testsSection" class="section">
+<button class="btn btn-secondary back-btn" onclick="app.router.navigate('')">← <span>Назад</span></button>
+<h2 style="font-size:2rem;margin-bottom:1rem;color:var(--primary);">Диагностика и тесты</h2>
+<p style="margin-bottom:2rem;color:var(--text-secondary);">Пройдите тесты для проверки знаний и получите сертификаты</p>
+<div class="dashboard-grid" id="testsList">
+<div class="category-card" onclick="app.tests.start('russian')"><div class="category-icon">📚</div><div class="category-title">Тест по русскому языку</div><div class="category-desc">20 вопросов · Уровень A1-B1</div></div>
+<div class="category-card" onclick="app.tests.start('history')"><div class="category-icon">🏛️</div><div class="category-title">Тест по истории</div><div class="category-desc">20 вопросов · От Рюрика до РФ</div></div>
+<div class="category-card" onclick="app.tests.start('laws')"><div class="category-icon">⚖️</div><div class="category-title">Тест по законам</div><div class="category-desc">20 вопросов · Права и обязанности</div></div>
+<div class="category-card" onclick="app.tests.start('cities')"><div class="category-icon">🏙️</div><div class="category-title">Тест по городам</div><div class="category-desc">20 вопросов · География и культура</div></div>
+<div class="category-card" onclick="app.tests.start('mixed')"><div class="category-icon">🎯</div><div class="category-title">Общий тест</div><div class="category-desc">30 вопросов · Все темы вместе</div></div>
+</div>
+<div id="testContainer" style="display:none;">
+<div class="test-container">
+<div id="testContent"></div>
+<button class="btn btn-primary mt-4" onclick="app.tests.submit()">Завершить тест</button>
+<button class="btn btn-secondary mt-4" onclick="app.tests.cancel()" style="margin-left:1rem;">Отменить</button>
+</div>
+</div>
+<div id="certificatesList" style="margin-top:3rem;">
+<h3>Мои сертификаты</h3>
+<div id="certificatesGrid" class="dashboard-grid" style="margin-top:1rem;"></div>
+</div>
+</section>
+</main>
+<!-- Auth Modal -->
+<div class="modal" id="authModal">
+<div class="modal-content">
+<div id="stepEmail">
+<h2 style="margin-bottom:1.5rem;">Введите адрес электронной почты</h2>
+<div class="form-group"><label>Email</label><input type="email" id="authEmail" placeholder="your@email.com"><div class="error" id="emailError"></div></div>
+<button class="btn btn-primary" onclick="app.auth.sendCode()" style="width:100%;">Продолжить</button>
+<button class="btn btn-secondary mt-4" onclick="app.auth.toggleMode()" style="width:100%;">Уже есть аккаунт? Войти</button>
+</div>
+<div id="stepCode" style="display:none;">
+<h2 style="margin-bottom:1.5rem;">Введите код подтверждения</h2>
+<p style="color:var(--text-secondary);margin-bottom:1rem;">Код отправлен на вашу электронную почту</p>
+<div class="form-group"><label>Код</label><input type="text" id="authCode" placeholder="123456" maxlength="6"><div class="error" id="codeError"></div></div>
+<button class="btn btn-primary" onclick="app.auth.verifyCode()" style="width:100%;">Подтвердить</button>
+</div>
+<div id="stepPassword" style="display:none;">
+<h2 style="margin-bottom:1.5rem;">Создайте пароль</h2>
+<div class="form-group"><label>Пароль</label><input type="password" id="authPassword" placeholder="Не менее 8 символов"><div class="error" id="passwordError"></div></div>
+<div class="form-group"><label>Подтвердите пароль</label><input type="password" id="authPasswordConfirm" placeholder="Повторите пароль"><div class="error" id="passwordConfirmError"></div></div>
+<button class="btn btn-primary" onclick="app.auth.register()" style="width:100%;">Зарегистрироваться</button>
+</div>
+<div id="stepLogin" style="display:none;">
+<h2 style="margin-bottom:1.5rem;">Вход в аккаунт</h2>
+<div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
+<div class="form-group"><label>Пароль</label><input type="password" id="loginPassword" placeholder="Ваш пароль"><div class="error" id="loginError"></div></div>
+<button class="btn btn-primary" onclick="app.auth.login()" style="width:100%;">Войти</button>
+<button class="btn btn-secondary mt-4" onclick="app.auth.toggleMode()" style="width:100%;">Нет аккаунта? Зарегистрироваться</button>
+</div>
+<button class="btn btn-secondary mt-4" onclick="app.closeAuthModal()" style="width:100%;border-radius: var(--radius);">✕ Закрыть</button>
+</div>
+</div>
+<script>
+// ============================================================
+// 🌐 API КЛИЕНТ (Интегрирован из 2-го файла, заменяет localStorage для данных пользователя)
+// ============================================================
+const api = {
+baseURL: 'http://localhost:3000/api',
+token: localStorage.getItem('rf_token') || null,
+setToken(t) { this.token = t; t ? localStorage.setItem('rf_token', t) : localStorage.removeItem('rf_token'); },
+async request(ep, opt = {}) {
+try {
+const res = await fetch(`${this.baseURL}${ep}`, {
+headers: { 'Content-Type': 'application/json', ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}) },
+...opt
+});
+const d = await res.json();
+if (!res.ok) throw new Error(d.error || 'Ошибка сервера');
+return d;
+} catch (e) { throw e; }
+},
+async sendCode(e) { return this.request('/auth/send-code', { method: 'POST', body: JSON.stringify({ email: e }) }); },
+async verifyCode(e, c) { return this.request('/auth/verify-code', { method: 'POST', body: JSON.stringify({ email: e, code: c }) }); },
+async register(e, p, c) { return this.request('/auth/register', { method: 'POST', body: JSON.stringify({ email: e, password: p, code: c }) }); },
+async login(e, p) { return this.request('/auth/login', { method: 'POST', body: JSON.stringify({ email: e, password: p }) }); },
+async getProgress(s) { return this.request(`/user/progress/${s}`); },
+async saveProgress(s, d) { return this.request(`/user/progress/${s}`, { method: 'PUT', body: JSON.stringify({ progress: d }) }); },
+async getCertificates() { return this.request('/user/certificates'); },
+async addCertificate(c) { return this.request('/user/certificates', { method: 'POST', body: JSON.stringify(c) }); }
+};
+
+// ============================================================
+// 🌐 ПЕРЕВОДЧИК (Полный из 1-го файла)
+// ============================================================
+const translator = {
+currentLang: 'ru',
+cache: {},
+CACHE_KEY: 'rf_translate_cache_v2',
+pendingQueue: [],
+isTranslating: false,
+init() {
+try {
+const saved = localStorage.getItem(this.CACHE_KEY);
+if (saved) this.cache = JSON.parse(saved);
+} catch(e) { this.cache = {}; }
+const savedLang = localStorage.getItem('rf_ui_lang') || 'ru';
+document.getElementById('uiLangSelect').value = savedLang;
+this.currentLang = savedLang;
+if (savedLang !== 'ru') this.translatePage();
+},
+saveCache() {
+try { localStorage.setItem(this.CACHE_KEY, JSON.stringify(this.cache)); } catch(e) {}
+},
+cacheKey(text, lang) { return `${lang}::${text.trim().substring(0,80)}`; },
+async translate(text, targetLang) {
+if (!text || !text.trim()) return text;
+if (targetLang === 'ru') return text;
+const key = this.cacheKey(text, targetLang);
+if (this.cache[key]) return this.cache[key];
+try {
+const encoded = encodeURIComponent(text.trim().substring(0, 500));
+const url = `https://api.mymemory.translated.net/get?q=${encoded}&langpair=ru|${targetLang}`;
+const res = await fetch(url);
+const data = await res.json();
+if (data.responseStatus === 200) {
+const translated = data.responseData.translatedText;
+this.cache[key] = translated;
+this.saveCache();
+return translated;
+}
+} catch(e) {}
+return text;
+},
+setLang(lang) {
+this.currentLang = lang;
+localStorage.setItem('rf_ui_lang', lang);
+if (lang === 'ru') {
+this.restorePage();
+} else {
+this.translatePage();
+}
+this.showIndicator(lang);
+if (app && app.currentSection) {
+setTimeout(() => app.rerenderSection(), 500);
+}
+},
+showIndicator(lang) {
+const el = document.getElementById('langIndicator');
+const names = {en:'EN',ky:'КЫР',kk:'ҚАЗ',uz:'UZ',tg:'ТЖК',hy:'ՀԱՅ',az:'AZ',tr:'TR',ar:'AR',zh:'中',fa:'FA',uk:'УКР',de:'DE',fr:'FR',es:'ES'};
+el.textContent = '🌐 ' + (names[lang] || lang.toUpperCase());
+el.classList.add('show');
+setTimeout(() => el.classList.remove('show'), 2000);
+},
+originals: {},
+storeOriginal(el) {
+if (!el.dataset.origintext && el.innerText.trim()) {
+el.dataset.origintext = el.innerText.trim();
+}
+},
+async translatePage() {
+const status = document.getElementById('translatorStatus');
+status.textContent = '⏳ Перевожу...';
+status.className = 'translator-status translating';
+const selectors = ['h1','h2','h3','h4','p','button','label','.category-title','.category-desc','.tab','.law-title','.law-content','.city-name','.city-meta','.vocab-word','.vocab-translation','th','td','span:not(.search-icon)','.timeline-title','.timeline-desc','.city-section-content'];
+const elements = [];
+selectors.forEach(sel => {
+document.querySelectorAll(sel).forEach(el => {
+if (el.children.length === 0 && el.innerText.trim().length > 1 && !el.closest('.modal') && !el.closest('#vocabGrid') && !el.closest('#phrasesGrid')) {
+elements.push(el);
+}
+});
+});
+let translated = 0;
+for (let i = 0; i < elements.length; i += 5) {
+const batch = elements.slice(i, i + 5);
+await Promise.all(batch.map(async el => {
+const orig = el.dataset.origintext || el.innerText.trim();
+el.dataset.origintext = orig;
+const t = await this.translate(orig, this.currentLang);
+if (t && t !== orig) el.innerText = t;
+translated++;
+}));
+if (i % 30 === 0 && i > 0) {
+status.textContent = `⏳ ${Math.round(translated/elements.length*100)}%...`;
+await new Promise(r => setTimeout(r, 200));
+}
+}
+status.textContent = `✓ Переведено (кэш: ${Object.keys(this.cache).length})`;
+status.className = 'translator-status cached';
+setTimeout(() => { status.textContent = 'Готово'; status.className = 'translator-status'; }, 3000);
+},
+restorePage() {
+document.querySelectorAll('[data-origintext]').forEach(el => {
+el.innerText = el.dataset.origintext;
+});
+const status = document.getElementById('translatorStatus');
+status.textContent = 'Готово';
+status.className = 'translator-status';
+}
+};
+
+// ============================================================
+// 🗂️ ДАННЫЕ (Полные, детальные данные из 1-го файла)
+// ============================================================
+const russianData = [
+{ id:'alphabet', icon:'🔤', title:'Алфавит и звуки', desc:'33 буквы, гласные, согласные, ударение', lesson: {
+theory: `<div class="lesson-section"><h3>Русский алфавит — 33 буквы</h3><p><strong>Гласные (10):</strong> А, Е, Ё, И, О, У, Ы, Э, Ю, Я</p><p><strong>Согласные (21):</strong> Б, В, Г, Д, Ж, З, Й, К, Л, М, Н, П, Р, С, Т, Ф, Х, Ц, Ч, Ш, Щ</p><p><strong>Знаки (2):</strong> Ъ (твёрдый), Ь (мягкий)</p><p><strong>Ударение</strong> может падать на любой слог: мо-ло-КО, ДО-ма, го-РОД</p><p><strong>Всегда твёрдые:</strong> Ж, Ш, Ц &nbsp; <strong>Всегда мягкие:</strong> Ч, Щ, Й</p><p><strong>Буква Ё</strong> всегда ударная: ёж, лёд, ёлка</p></div>`,
+examples: `<div class="lesson-section"><h3>Примеры чтения</h3><div class="example-box"><div class="ru">МАМА</div><div class="tr">[MA-ma] — мать</div></div><div class="example-box"><div class="ru">ДОМ</div><div class="tr">[dom] — дом</div></div><div class="example-box"><div class="ru">РОССИЯ</div><div class="tr">[RO-ssi-ya] — Россия</div></div><div class="example-box"><div class="ru">ЁЛКА</div><div class="tr">[YOL-ka] — ёлка (новогоднее дерево)</div></div><div class="example-box"><div class="ru">ПРИВЕТ</div><div class="tr">[pri-VYET] — привет</div></div><div class="example-box"><div class="ru">СПАСИБО</div><div class="tr">[spa-SI-ba] — спасибо</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Выберите правильную транслитерацию слова «ГОРОД»:</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,1,'alphabet')"><span>go-ROT</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,1,'alphabet')"><span>ГО-род</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,1,'alphabet')"><span>go-ROD</span></div></div></div>` }},
+{ id:'parts', icon:'📝', title:'Части речи', desc:'Существительное, глагол, прилагательное', lesson: {
+theory: `<div class="lesson-section"><h3>Части речи в русском языке</h3><p><strong>Существительное</strong> — кто? что? (человек, город, книга)</p><p><strong>Глагол</strong> — что делать? (работать, жить, идти)</p><p><strong>Прилагательное</strong> — какой? (большой, красивый, новый)</p><p><strong>Местоимение</strong> — я, ты, он, она, мы, вы, они</p><p><strong>Наречие</strong> — как? когда? где? (быстро, сейчас, здесь)</p><p><strong>Предлог</strong> — в, на, из, к, с, от, по, за, под, над, перед, между</p><p><strong>Числительное</strong> — один, два, три... первый, второй...</p><p><strong>Союз</strong> — и, а, но, или, что, если, когда, потому что</p></div>`,
+examples: `<div class="lesson-section"><h3>Примеры</h3><div class="example-box"><div class="ru">Я живу в Москве</div><div class="tr">Я (мест.) живу (глаг.) в (предл.) Москве (сущ.)</div></div><div class="example-box"><div class="ru">Красивый город</div><div class="tr">Красивый (прил.) город (сущ.)</div></div><div class="example-box"><div class="ru">Он работает быстро</div><div class="tr">Он (мест.) работает (глаг.) быстро (нареч.)</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Что такое слово «большой»?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,1,'parts')"><span>Существительное</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,1,'parts')"><span>Прилагательное</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,1,'parts')"><span>Глагол</span></div></div></div>` }},
+{ id:'cases', icon:'🔄', title:'Падежи (6 падежей)', desc:'Именительный, родительный, дательный...', lesson: {
+theory: `<div class="lesson-section"><h3>6 падежей русского языка</h3><p><strong>1. Именительный (кто? что?)</strong> — начальная форма: Москва, студент</p><p><strong>2. Родительный падеж (кого? чего?)</strong> — из Москвы, нет студента</p><p><strong>3. Дательный падеж (кому? чему?)</strong> — к Москве, дать студенту</p><p><strong>4. Винительный падеж (кого? что?)</strong> — вижу Москву, люблю студента</p><p><strong>5. Творительный падеж (кем? чем?)</strong> — с Москвой, стать студентом</p><p><strong>6. Предложный падеж (о ком? о чём?)</strong> — в Москве, о студенте</p><p><em>Запомни предлоги:</em> В/НА + Предложный (место), ИЗ/ОТ + Родительный, К/ПО + Дательный</p></div>`,
+examples: `<div class="lesson-section"><h3>Склонение слова «книга» по падежам</h3><div class="example-box"><div class="ru">Это книга (Им.) → читать книгу (Вин.) → нет книги (Род.) → дать книге (Дат.) → с книгой (Твор.) → в книге (Пред.)</div></div><div class="example-box"><div class="ru">Я живу в Москве</div><div class="tr">Москве — Предложный падеж</div></div><div class="example-box"><div class="ru">Я еду из Москвы</div><div class="tr">Москвы — Родительный падеж</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>«Я живу __ Москва» — какой падеж нужен?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,2,'cases')"><span>Родительный падеж — «Москвы»</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,2,'cases')"><span>Винительный падеж — «Москву»</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,2,'cases')"><span>Предложный падеж — «Москве»</span></div></div></div>` }},
+{ id:'gender', icon:'♂️', title:'Род и число', desc:'Мужской, женский, средний род, множественное число', lesson: {
+theory: `<div class="lesson-section"><h3>Грамматический род</h3><p><strong>Мужской род</strong> — оканчивается на согласную или -й: студент, чай, день</p><p><strong>Женский род</strong> — оканчивается на -а/-я или -ь: женщина, неделя, ночь</p><p><strong>Средний род</strong> — оканчивается на -о/-е: окно, море, время</p><p><strong>Множественное число:</strong></p><p>стол → столы | книга → книги | окно → окна</p><p><strong>Исключения:</strong> ребёнок → дети | человек → люди | год → лет</p><p><strong>Числительные и существительные:</strong><br>1 год, 2–4 года, 5+ лет<br>1 книга, 2–4 книги, 5+ книг</p></div>`,
+examples: `<div class="lesson-section"><h3>Примеры согласования</h3><div class="example-box"><div class="ru">Большой город (м. р.) — Большая страна (ж. р.) — Большое море (ср. р.)</div></div><div class="example-box"><div class="ru">Красивый дом — Красивая девушка — Красивое здание</div></div><div class="example-box"><div class="ru">Мой паспорт (м.) — Моя виза (ж.) — Моё разрешение (с.)</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Какого рода слово «виза»?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,1,'gender')"><span>мужского</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,1,'gender')"><span>Женского</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,1,'gender')"><span>Среднего</span></div></div></div>` }},
+{ id:'verbs', icon:'🏃', title:'Спряжение глаголов', desc:'I и II спряжение, личные окончания', lesson: {
+theory: `<div class="lesson-section"><h3>Спряжение глаголов</h3><p><strong>I спряжение</strong> (-ать/-ять, кроме исключений): читать, знать, жить</p><table style="width:100%;border-collapse:collapse;margin:1rem 0;"><tr style="background:var(--primary);color:white;"><th style="padding:0.5rem;">Лицо</th><th>читать</th><th>знать</th></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Я</td><td>чита<b>ю</b></td><td>зна<b>ю</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Ты</td><td>чита<b>ешь</b></td><td>зна<b>ешь</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Он/Она</td><td>чита<b>ет</b></td><td>зна<b>ет</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Мы</td><td>чита<b>ем</b></td><td>зна<b>ем</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Вы</td><td>чита<b>ете</b></td><td>зна<b>ете</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Они</td><td>чита<b>ют</b></td><td>зна<b>ют</b></td></tr></table><p><strong>II спряжение</strong> (-ить/-еть/-ать, исключения): говорить, любить, смотреть</p><table style="width:100%;border-collapse:collapse;margin:1rem 0;"><tr style="background:var(--primary);color:white;"><th style="padding:0.5rem;">Лицо</th><th>говорить</th></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Я</td><td>гово<b>рю</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Ты</td><td>гово<b>ришь</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Он/Она</td><td>гово<b>рит</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Мы</td><td>гово<b>рим</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Вы</td><td>гово<b>рите</b></td></tr><tr><td style="padding:0.5rem;border:1px solid var(--border);">Они</td><td>гово<b>рят</b></td></tr></table></div>`,
+examples: `<div class="lesson-section"><h3>Примеры</h3><div class="example-box"><div class="ru">Я работаю в офисе</div><div class="tr">I work in the office</div></div><div class="example-box"><div class="ru">Он говорит по-русски</div><div class="tr">He speaks Russian</div></div><div class="example-box"><div class="ru">Мы живём в России</div><div class="tr">We live in Russia</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>«Я __ по-русски» — какая форма глагола «говорить»?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,2,'verbs')"><span>говоришь</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,2,'verbs')"><span>говорит</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,2,'verbs')"><span>говорю</span></div></div></div>` }},
+{ id:'aspects', icon:'⏱️', title:'Виды глаголов', desc:'Совершенный и несовершенный вид', lesson: {
+theory: `<div class="lesson-section"><h3>Виды глаголов</h3><p><strong>Несовершенный вид</strong> — незавершенное/повторяющееся действие: читать, писать, делать</p><p><strong>Совершенный вид</strong> — завершенное/однократное действие: прочитать, написать, сделать</p><p>Обычно образуется с помощью приставок: по-, про-, на-, за-, вы-, с-, у-, пере-</p><table style="width:100%;border-collapse:collapse;margin:1rem 0;"><tr style="background:var(--primary);color:white;"><th>Несов.</th><th>Сов.</th><th>Смысл</th></tr><tr><td style="border:1px solid var(--border);padding:0.5rem;">читать</td><td>прочитать</td><td>читать/дочитать</td></tr><tr><td style="border:1px solid var(--border);padding:0.5rem;">писать</td><td>написать</td><td>писать/написать</td></tr><tr><td style="border:1px solid var(--border);padding:0.5rem;">делать</td><td>сделать</td><td>делать/завершить</td></tr><tr><td style="border:1px solid var(--border);padding:0.5rem;">учить</td><td>выучить</td><td>учить/выучить</td></tr><tr><td style="border:1px solid var(--border);padding:0.5rem;">говорить</td><td>сказать</td><td>говорить/сказать</td></tr></table></div>`,
+examples: `<div class="lesson-section"><h3>Примеры в контексте</h3><div class="example-box"><div class="ru">Я читал книгу весь день</div><div class="tr">Несов. — процесс (I was reading all day)</div></div><div class="example-box"><div class="ru">Я прочитал книгу за 3 часа</div><div class="tr">Сов. — завершено (I finished reading in 3 hours)</div></div><div class="example-box"><div class="ru">Каждый день я пишу заявления</div><div class="tr">Несов. — повторяющееся действие</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>«Я уже __ домашнее задание» — совершённый вид:</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,0,'aspects')"><span>сделал</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,0,'aspects')"><span>делал</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,0,'aspects')"><span>делаю</span></div></div></div>` }},
+{ id:'sentence', icon:'🔧', title:'Структура предложения', desc:'Порядок слов, вопросительные предложения', lesson: {
+theory: `<div class="lesson-section"><h3>Структура предложения</h3><p><strong>Базовый порядок:</strong> Подлежащее + Сказуемое + Дополнение</p><p>В русском языке порядок слов более свободный, чем в английском.</p><p><strong>Утвердительное предложение:</strong> Я иду в магазин. / В магазин иду я.</p><p><strong>Отрицательное:</strong> Я НЕ иду в магазин. (частица НЕ перед глаголом)</p><p><strong>Вопросительное:</strong></p><ul><li>Интонацией: Ты идёшь в магазин? (голос повышается)</li><li>Словом ЛИ: Идёшь ли ты в магазин?</li><li>Вопросительными словами: Куда ты идёшь? Когда? Почему? Как?</li></ul><p><strong>Вопросительные слова:</strong> кто, что, где, куда, откуда, когда, как, почему, зачем, сколько, какой, чей</p></div>`,
+examples: `<div class="lesson-section"><h3>Примеры</h3><div class="example-box"><div class="ru">Где вы живёте?</div><div class="tr">Where do you live?</div></div><div class="example-box"><div class="ru">Я не понимаю по-русски</div><div class="tr">I don't understand Russian</div></div><div class="example-box"><div class="ru">Сколько стоит этот товар?</div><div class="tr">How much does this product cost?</div></div><div class="example-box"><div class="ru">Когда открывается банк?</div><div class="tr">When does the bank open?</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Как спросить «Где находится больница?» по-русски?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,0,'sentence')"><span>Где находится больница?</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,0,'sentence')"><span>Больница где находится ли?</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,0,'sentence')"><span>Где больница находится?</span></div></div></div>` }},
+{ id:'spelling', icon:'✏️', title:'Правила орфографии', desc:'ЖИ/ШИ, ЧА/ЩА, ЧУ/ЩУ, мягкий знак', lesson: {
+theory: `<div class="lesson-section"><h3>Основные правила орфографии</h3><p><strong>ЖИ/ШИ пиши с И:</strong> жизнь, машина, лыжи, шире, живой</p><p><strong>ЧА/ЩА пиши с А:</strong> чайник, часть, площадь, задача</p><p><strong>ЧУ/ЩУ пиши через У:</strong> чувство, чудо, щука, ищу</p><p><strong>Мягкий знак (Ь):</strong></p><ul><li>Смягчает согласный: соль, мель, день</li><li>В глаголах на -ться/-тся: мыться, он моется</li><li>После шипящих у сущ. ж. р.: ночь, дочь, рожь</li></ul><p><strong>Безударные гласные:</strong> проверяй ударением: вОды → вода, лЕса → лес</p><p><strong>Приставки:</strong> без-/бес- (безопасный/беспечный — перед глухими Б→С)</p></div>`,
+examples: `<div class="lesson-section"><h3>Примеры</h3><div class="example-box"><div class="ru">жить (жи→и) / машина / лыжи</div></div><div class="example-box"><div class="ru">чашка / площадь / задача</div></div><div class="example-box"><div class="ru">Нужно мыТЬСЯ каждый день. Он моЕТСЯ.</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Как правильно пишется: ж_знь?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,1,'spelling')"><span>жызнь</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,1,'spelling')"><span>жизнь</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,1,'spelling')"><span>жезнь</span></div></div></div>` }},
+{ id:'punctuation', icon:'❗', title:'Пунктуация', desc:'Запятая, точка, тире, двоеточие', lesson: {
+theory: `<div class="lesson-section"><h3>Основные знаки препинания</h3><p><strong>Запятая (,)</strong> — между однородными членами, перед союзами НО/А/ДА, в сложных предложениях, при обращении</p><p><strong>Тире (—)</strong> — между подлежащим и сказуемым (оба сущ.): Москва — столица России</p><p><strong>Двоеточие (:)</strong> — перед перечислением, перед прямой речью</p><p><strong>Восклицательный знак (!)</strong> — восклицание, команда: Стоп! Осторожно!</p><p><strong>Вопросительный знак (?)</strong> — конец вопроса</p><p><strong>Прямая речь:</strong> «Я говорю», — сказал он.</p><p><strong>В официальных документах</strong> важна точность пунктуации!</p></div>`,
+examples: `<div class="lesson-section"><h3>Примеры</h3><div class="example-box"><div class="ru">Москва, Санкт-Петербург, Казань — крупные города.</div></div><div class="example-box"><div class="ru">Россия — федеративное государство.</div></div><div class="example-box"><div class="ru">Документы: паспорт, виза, полис.</div></div><div class="example-box"><div class="ru">Он спросил: «Где ваш паспорт?»</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Какой знак нужен: «Москва _ столица России»?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,2,'punctuation')"><span>Запятая (,)</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,2,'punctuation')"><span>Двоеточие (:)</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,2,'punctuation')"><span>Тире (—)</span></div></div></div>` }},
+{ id:'numbers', icon:'🔢', title:'Числа и счет', desc:'Числительные, даты, телефоны', lesson: {
+theory: `<div class="lesson-section"><h3>Числа по-русски</h3><p>0-ноль, 1-один, 2-два, 3-три, 4-четыре, 5-пять, 6-шесть, 7-семь, 8-восемь, 9-девять, 10-десять</p><p>11-одиннадцать, 12-двенадцать, 13-тринадцать, ..., 20-двадцать</p><p>30 — тридцать, 40 — сорок, 50 — пятьдесят, 60 — шестьдесят, 70 — семьдесят, 80 — восемьдесят, 90 — девяносто, 100 — сто</p><p>200-двести, 300-триста, 400-четыреста, 500-пятьсот, 1000-тысяча, 1000000-миллион</p><p><strong>Порядковые:</strong> первый, второй, третий, четвёртый, пятый, шестой, седьмой, восьмой, девятый, десятый</p><p><strong>Даты:</strong> 1 января — первое января; 9 мая — девятое мая</p><p><strong>Время:</strong> 9:00 — девять часов; 9:30 — половина десятого; 9:15 — четверть десятого</p></div>`,
+examples: `<div class="lesson-section"><h3>Примеры</h3><div class="example-box"><div class="ru">Мой номер телефона: восемь девятьсот двадцать три...</div></div><div class="example-box"><div class="ru">Я живу в России уже 3 года (три года)</div></div><div class="example-box"><div class="ru">Патент стоит 5000 рублей (пять тысяч)</div></div><div class="example-box"><div class="ru">Сегодня 1 января — Новый год!</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Как написать число «25» словами?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,1,'numbers')"><span>двадцать четыре</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,1,'numbers')"><span>двадцать пять</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,1,'numbers')"><span>пятнадцать два</span></div></div></div>` }},
+{ id:'greetings', icon:'👋', title:'Приветствия и вежливость', desc:'Формальное и неформальное общение', lesson: {
+theory: `<div class="lesson-section"><h3>Приветствия</h3><p><strong>Формальные:</strong> Здравствуйте! Добрый день! Добрый вечер! Доброе утро!</p><p><strong>Неформальные:</strong> Привет! Здорово! Хай! Салют!</p><p><strong>Прощание:</strong> До свидания (формально), пока / до встречи (неформально), спокойной ночи</p><p><strong>Вежливые слова:</strong></p><ul><li>Пожалуйста — please / you're welcome</li><li>Спасибо — thank you</li><li>Извините / Простите — excuse me / sorry</li><li>Будьте добры... — Не могли бы вы...</li><li>Не могли бы вы... — Could you...</li></ul><p><strong>«Вы» и «ты»:</strong> Вы — уважительное обращение, ты — неформальное/близкое</p></div>`,
+examples: `<div class="lesson-section"><h3>Диалоги</h3><div class="example-box"><div class="ru">— Здравствуйте! Я новый сотрудник.<br>— Добро пожаловать! Меня зовут Иван.</div></div><div class="example-box"><div class="ru">— Извините, вы не знаете, где УФМС?<br>— Конечно, это на улице Ленина.</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Как поприветствовать начальника?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,0,'greetings')"><span>Здравствуйте!</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,0,'greetings')"><span>Привет!</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,0,'greetings')"><span>Хай!</span></div></div></div>` }},
+{ id:'documents', icon:'📄', title:'Язык документов', desc:'Заявления, справки, официальные тексты', lesson: {
+theory: `<div class="lesson-section"><h3>Официальный стиль</h3><p><strong>Стандартные фразы для заявлений:</strong></p><ul><li>Прошу Вас... — I request you...</li><li>В связи с... — В связи с...</li><li>На основании... — На основании...</li><li>Настоящим подтверждаю... — Настоящим подтверждаю...</li><li>Приложения: — Приложения:</li></ul><p><strong>Структура заявления:</strong> Кому → От кого → Заголовок → Текст → Подпись → Дата</p><p><strong>Важные слова:</strong> заявление, справка, договор, уведомление, квитанция, регистрация, разрешение, продление, отказ, одобрение</p></div>`,
+examples: `<div class="lesson-section"><h3>Пример заявления</h3><div class="example-box"><div class="ru">Директору ООО «Ромашка»<br>от Ахмедова Рустама Алиевича<br><br>ЗАЯВЛЕНИЕ<br>Прошу принять меня на работу на должность менеджера с 01.01.2024.<br><br>Подпись: ___ Дата: ___</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Что означает слово «квитанция»?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,2,'documents')"><span>Заявление</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,2,'documents')"><span>Паспорт</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,2,'documents')"><span>Платёжный документ (квитанция)</span></div></div></div>` }},
+{ id:'medical', icon:'🏥', title:'Медицина и здоровье', desc:'Симптомы, больница, скорая помощь', lesson: {
+theory: `<div class="lesson-section"><h3>Медицинская лексика</h3><p><strong>Врачи:</strong> терапевт, хирург, педиатр, гинеколог, стоматолог, окулист, невролог, кардиолог</p><p><strong>Симптомы:</strong> боль (pain), температура (fever), кашель (cough), насморк (runny nose), головокружение (dizziness), тошнота (nausea)</p><p><strong>Фразы, которые можно услышать от врача:</strong></p><ul><li>У меня болит... голова/живот/горло/спина</li><li>Мне плохо / Я плохо себя чувствую</li><li>Вызовите скорую! — Вызывайте скорую!</li><li>Мне нужен рецепт — I need a prescription</li></ul><p><strong>Скорая помощь: 103</strong> | Единый номер: <strong>112</strong></p><p><strong>Полис ОМС</strong> — обязательное медицинское страхование (для граждан РФ и лиц с видом на жительство)</p></div>`,
+examples: `<div class="lesson-section"><h3>Диалог в поликлинике</h3><div class="example-box"><div class="ru">— У вас есть полис?<br>— Да, вот он.<br>— Что вас беспокоит?<br>— У меня болит голова уже 3 дня.</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Как сказать «У меня болит живот»?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,0,'medical')"><span>У меня болит живот</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,0,'medical')"><span>У меня болит живот</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,0,'medical')"><span>У меня сильно болит живот</span></div></div></div>` }},
+{ id:'shopping', icon:'🛒', title:'Магазин и покупки', desc:'В магазине, на рынке, в торговом центре', lesson: {
+theory: `<div class="lesson-section"><h3>Покупки по-русски</h3><p><strong>В магазине:</strong> касса (checkout), цена (price), скидка (discount), чек (receipt), сдача (change)</p><p><strong>Полезные фразы:</strong></p><ul><li>Сколько стоит? — How much?</li><li>Есть ли скидка? — Is there a discount?</li><li>Можно примерить? — Can I try it on?</li><li>Я возьму это — I'll take this</li><li>Есть ли другой размер? — Is there another size?</li><li>Мне нужна скидочная карта — I need a loyalty card</li></ul><p><strong>Продукты:</strong> хлеб, молоко, мясо, рыба, овощи, фрукты, яйца, сахар, соль, масло</p><p><strong>Типы магазинов:</strong> продуктовый, аптека, универмаг, рынок, торговый центр (ТЦ)</p></div>`,
+examples: `<div class="lesson-section"><h3>Диалог в магазине</h3><div class="example-box"><div class="ru">— Сколько стоит этот хлеб?<br>— 45 рублей.<br>— Дайте два, пожалуйста.<br>— С вас 90 рублей.</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Как узнать цену товара?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,1,'shopping')"><span>Сколько это стоит?</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,1,'shopping')"><span>Сколько стоит?</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,1,'shopping')"><span>Назови цену!</span></div></div></div>` }},
+{ id:'transport', icon:'🚇', title:'Транспорт', desc:'Метро, автобус, такси, железная дорога', lesson: {
+theory: `<div class="lesson-section"><h3>Транспорт в России</h3><p><strong>Виды транспорта:</strong> метро, автобус, троллейбус, трамвай, маршрутка, такси, электричка, поезд, самолёт</p><p><strong>В метро:</strong></p><ul><li>Пополнить карту (Тройка) — refill the card</li><li>Следующая станция... — Следующая станция...</li><li>Осторожно, двери закрываются! — Двери закрываются!</li></ul><p><strong>Такси:</strong> Яндекс Go, Gett, Uber — оплата картой или наличными</p><p><strong>РЖД (ж/д):</strong> плацкарт, купе, СВ, «Ласточка», «Сапсан»</p><p><strong>Полезные фразы:</strong></p><ul><li>Как доехать до...? — Как добраться до...?</li><li>Где остановка? — Где находится автобусная остановка?</li><li>Один билет до... — One ticket to...</li></ul></div>`,
+examples: `<div class="lesson-section"><h3>Диалог</h3><div class="example-box"><div class="ru">— Как добраться до Красной площади?<br>— На метро до станции «Охотный Ряд».</div></div><div class="example-box"><div class="ru">— Один билет до Санкт-Петербурга, пожалуйста.<br>— Купе или плацкарт?</div></div></div>`,
+practice: `<div class="lesson-section"><h3>Практика</h3><p>Как сказать «Где автобусная остановка»?</p><div class="answers"><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,0,0,'transport')"><span>Где остановка автобуса?</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,1,0,'transport')"><span>Где есть автобус?</span></div><div class="answer-option" onclick="app.russian.checkLessonAnswer(this,2,0,'transport')"><span>Куда автобус?</span></div></div></div>` }}
+];
+
+const vocabularyData = {
+basic: [
+{w:'да', tr:'da', t:'yes'},{w:'нет', tr:'net', t:'no'},{w:'пожалуйста', tr:'pozhaluysta', t:'please'},
+{w:'спасибо', tr:'spasibo', t:'thank you'},{w:'привет', tr:'privet', t:'hello (informal)'},
+{w:'здравствуйте', tr:'zdravstvuyte', t:'hello (formal)'},{w:'до свидания', tr:'do svidaniya', t:'goodbye'},
+{w:'да, понял', tr:'da, ponyal', t:'yes, understood'},{w:'не понимаю', tr:'ne ponimayu', t:'I don\'t understand'},
+{w:'повторите', tr:'povtorite', t:'please repeat'},{w:'человек', tr:'chelovek', t:'person/human'},
+{w:'мужчина', tr:'muzhchina', t:'man'},{w:'женщина', tr:'zhenshchina', t:'woman'},
+{w:'ребёнок', tr:'rebyonok', t:'child'},{w:'семья', tr:'semya', t:'family'},
+{w:'друг', tr:'drug', t:'friend'},{w:'имя', tr:'imya', t:'first name'},
+{w:'фамилия', tr:'familiya', t:'surname'},{w:'адрес', tr:'adres', t:'address'},
+{w:'телефон', tr:'telefon', t:'telephone'},{w:'дом', tr:'dom', t:'house/home'},
+{w:'квартира', tr:'kvartira', t:'apartment'},{w:'город', tr:'gorod', t:'city'},
+{w:'страна', tr:'strana', t:'country'},{w:'Россия', tr:'Rossiya', t:'Russia'},
+{w:'работа', tr:'rabota', t:'work/job'},{w:'деньги', tr:'dengi', t:'money'},
+{w:'документ', tr:'dokument', t:'document'},{w:'паспорт', tr:'pasport', t:'passport'},
+{w:'виза', tr:'viza', t:'visa'}
+],
+verbs: [
+{w:'быть', tr:'byt\'', t:'to be'},{w:'иметь', tr:'imet\'', t:'to have'},
+{w:'идти', tr:'idti', t:'to go (on foot)'},{w:'ехать', tr:'yekhat\'', t:'to go (by transport)'},
+{w:'жить', tr:'zhit\'', t:'to live'},{w:'работать', tr:'rabotat\'', t:'to work'},
+{w:'говорить', tr:'govorit\'', t:'to speak'},{w:'понимать', tr:'ponimat\'', t:'to understand'},
+{w:'знать', tr:'znat\'', t:'to know'},{w:'хотеть', tr:'khotet\'', t:'to want'},
+{w:'мочь', tr:'moch\'', t:'to be able to'},{w:'делать', tr:'delat\'', t:'to do/make'},
+{w:'купить', tr:'kupit\'', t:'to buy'},{w:'платить', tr:'platit\'', t:'to pay'},
+{w:'есть', tr:'yest\'', t:'to eat'},{w:'пить', tr:'pit\'', t:'to drink'},
+{w:'видеть', tr:'videt\'', t:'to see'},{w:'слышать', tr:'slyshat\'', t:'to hear'},
+{w:'читать', tr:'chitat\'', t:'to read'},{w:'писать', tr:'pisat\'', t:'to write'},
+{w:'учиться', tr:'uchit\'sya', t:'to study'},{w:'помочь', tr:'pomoch\'', t:'to help'},
+{w:'открыть', tr:'otkryt\'', t:'to open'},{w:'закрыть', tr:'zakryt\'', t:'to close'},
+{w:'приехать', tr:'priyekhat\'', t:'to arrive (by transport)'},{w:'уехать', tr:'uyekhat\'', t:'to leave (by transport)'},
+{w:'найти', tr:'nayti', t:'to find'},{w:'дать', tr:'dat\'', t:'to give'},
+{w:'взять', tr:'vzyat\'', t:'to take'},{w:'позвонить', tr:'pozvonit\'', t:'to call'}
+],
+time: [
+{w:'сегодня', tr:'segodnya', t:'today'},{w:'вчера', tr:'vchera', t:'yesterday'},
+{w:'завтра', tr:'zavtra', t:'tomorrow'},{w:'сейчас', tr:'seychas', t:'now'},
+{w:'потом', tr:'potom', t:'later'},{w:'всегда', tr:'vsegda', t:'always'},
+{w:'никогда', tr:'nikogda', t:'never'},{w:'иногда', tr:'inogda', t:'sometimes'},
+{w:'утро', tr:'utro', t:'morning'},{w:'день', tr:'den\'', t:'day/afternoon'},
+{w:'вечер', tr:'vecher', t:'evening'},{w:'ночь', tr:'noch\'', t:'night'},
+{w:'неделя', tr:'nedelya', t:'week'},{w:'месяц', tr:'mesyats', t:'month'},
+{w:'год', tr:'god', t:'year'},{w:'час', tr:'chas', t:'hour'},
+{w:'минута', tr:'minuta', t:'minute'},{w:'понедельник', tr:'ponedelnik', t:'Monday'},
+{w:'вторник', tr:'vtornik', t:'Tuesday'},{w:'среда', tr:'sreda', t:'Wednesday'},
+{w:'четверг', tr:'chetverg', t:'Thursday'},{w:'пятница', tr:'pyatnitsa', t:'Friday'},
+{w:'суббота', tr:'subbota', t:'Saturday'},{w:'воскресенье', tr:'voskresenye', t:'Sunday'},
+{w:'январь', tr:'yanvar\'', t:'January'},{w:'февраль', tr:'fevral\'', t:'February'},
+{w:'март', tr:'mart', t:'March'},{w:'июнь', tr:'iyun\'', t:'June'},
+{w:'сентябрь', tr:'sentyabr\'', t:'September'},{w:'декабрь', tr:'dekabr\'', t:'December'}
+],
+places: [
+{w:'магазин', tr:'magazin', t:'shop/store'},{w:'аптека', tr:'apteka', t:'pharmacy'},
+{w:'больница', tr:'bolnitsa', t:'hospital'},{w:'поликлиника', tr:'poliklinika', t:'clinic'},
+{w:'банк', tr:'bank', t:'bank'},{w:'почта', tr:'pochta', t:'post office'},
+{w:'школа', tr:'shkola', t:'school'},{w:'университет', tr:'universitet', t:'university'},
+{w:'работа', tr:'rabota', t:'workplace'},{w:'офис', tr:'ofis', t:'office'},
+{w:'рынок', tr:'rynok', t:'market'},{w:'ресторан', tr:'restoran', t:'restaurant'},
+{w:'кафе', tr:'kafe', t:'cafe'},{w:'гостиница', tr:'gostinitsa', t:'hotel'},
+{w:'аэропорт', tr:'aeroport', t:'airport'},{w:'вокзал', tr:'vokzal', t:'train station'},
+{w:'метро', tr:'metro', t:'metro/subway'},{w:'автобус', tr:'avtobus', t:'bus'},
+{w:'полиция', tr:'politsiya', t:'police'},{w:'суд', tr:'sud', t:'court'},
+{w:'мэрия', tr:'meriya', t:'city hall'},{w:'МФЦ', tr:'MFTs', t:'multifunctional center'},
+{w:'УФМС', tr:'UFMS', t:'migration service'},{w:'налоговая', tr:'nalogovaya', t:'tax office'},
+{w:'пенсионный фонд', tr:'pensionnyy fond', t:'pension fund'},
+{w:'библиотека', tr:'biblioteka', t:'library'},{w:'музей', tr:'muzey', t:'museum'},
+{w:'парк', tr:'park', t:'park'},{w:'площадь', tr:'ploshchad\'', t:'square'},
+{w:'улица', tr:'ulitsa', t:'street'}
+],
+food: [
+{w:'хлеб', tr:'khleb', t:'bread'},{w:'вода', tr:'voda', t:'water'},
+{w:'молоко', tr:'moloko', t:'milk'},{w:'мясо', tr:'myaso', t:'meat'},
+{w:'рыба', tr:'ryba', t:'fish'},{w:'курица', tr:'kuritsa', t:'chicken'},
+{w:'яйцо', tr:'yaytso', t:'egg'},{w:'сыр', tr:'syr', t:'cheese'},
+{w:'овощи', tr:'ovoshchi', t:'vegetables'},{w:'фрукты', tr:'frukty', t:'fruits'},
+{w:'рис', tr:'ris', t:'rice'},{w:'суп', tr:'sup', t:'soup'},
+{w:'борщ', tr:'borshch', t:'borscht (beet soup)'},{w:'пельмени', tr:'pelmeni', t:'dumplings'},
+{w:'блины', tr:'bliny', t:'pancakes (blini)'},{w:'каша', tr:'kasha', t:'porridge'},
+{w:'соль', tr:'sol\'', t:'salt'},{w:'сахар', tr:'sakhar', t:'sugar'},
+{w:'масло', tr:'maslo', t:'butter/oil'},{w:'чай', tr:'chay', t:'tea'},
+{w:'кофе', tr:'kofe', t:'coffee'},{w:'сок', tr:'sok', t:'juice'},
+{w:'пиво', tr:'pivo', t:'beer'},{w:'вино', tr:'vino', t:'wine'},
+{w:'завтрак', tr:'zavtrak', t:'breakfast'},{w:'обед', tr:'obed', t:'lunch'},
+{w:'ужин', tr:'uzhin', t:'dinner'},{w:'вкусно', tr:'vkusno', t:'delicious'},
+{w:'горячо', tr:'goryacho', t:'hot'},{w:'холодно', tr:'kholodno', t:'cold'}
+],
+official: [
+{w:'заявление', tr:'zayavleniye', t:'application/statement'},
+{w:'справка', tr:'spravka', t:'certificate/reference'},
+{w:'договор', tr:'dogovor', t:'contract/agreement'},
+{w:'квитанция', tr:'kvitantsiya', t:'receipt'},
+{w:'регистрация', tr:'registratsiya', t:'registration'},
+{w:'разрешение', tr:'razresheniye', t:'permit/permission'},
+{w:'патент', tr:'patent', t:'work permit (patent)'},
+{w:'миграция', tr:'migratsiya', t:'migration'},
+{w:'гражданство', tr:'grazhdanstvo', t:'citizenship'},
+{w:'вид на жительство', tr:'vid na zhitelstvo', t:'residence permit (ВНЖ)'},
+{w:'временная регистрация', tr:'vremennaya registratsiya', t:'temporary registration'},
+{w:'постоянная регистрация', tr:'postoyannaya registratsiya', t:'permanent registration'},
+{w:'миграционная карта', tr:'migratsionnaya karta', t:'migration card'},
+{w:'нотариус', tr:'notarius', t:'notary'},{w:'перевод', tr:'perevod', t:'translation'},
+{w:'апостиль', tr:'apostil\'', t:'apostille'},{w:'налог', tr:'nalog', t:'tax'},
+{w:'штраф', tr:'shtraf', t:'fine/penalty'},{w:'депортация', tr:'deportatsiya', t:'deportation'},
+{w:'продление', tr:'prodleniye', t:'extension'},{w:'отказ', tr:'otkaz', t:'refusal'},
+{w:'одобрение', tr:'odobreniye', t:'approval'},{w:'подпись', tr:'podpis\'', t:'signature'},
+{w:'печать', tr:'pechat\'', t:'stamp/seal'},{w:'оригинал', tr:'original', t:'original'},
+{w:'копия', tr:'kopiya', t:'copy'},{w:'перевод с нотариусом', tr:'perevod s notariusom', t:'notarized translation'},
+{w:'работодатель', tr:'rabotodatel\'', t:'employer'},{w:'сотрудник', tr:'sotrudnik', t:'employee'},
+{w:'трудовой договор', tr:'trudovoy dogovor', t:'employment contract'}
+]
+};
+
+const phrasesData = {
+emergency: [
+{w:'Помогите!', tr:'Pomogite!', t:'Help!'},
+{w:'Вызовите скорую!', tr:'Vyzovite skoruyu!', t:'Call an ambulance!'},
+{w:'Вызовите полицию!', tr:'Vyzovite politsiyu!', t:'Call the police!'},
+{w:'Пожар!', tr:'Pozhar!', t:'Fire!'},
+{w:'Я потерялся', tr:'Ya poteryalsya', t:'I am lost'},
+{w:'Меня ограбили', tr:'Menya ograbili', t:'I was robbed'},
+{w:'У меня нет документов', tr:'U menya net dokumentov', t:'I have no documents'},
+{w:'Мне нужен переводчик', tr:'Mne nuzhen perevodchik', t:'I need a translator'},
+{w:'Позвоните в посольство', tr:'Pozvonite v posolstvo', t:'Call the embassy'},
+{w:'Я не говорю по-русски', tr:'Ya ne govoryu po-russki', t:'I don\'t speak Russian'}
+],
+migration: [
+{w:'Где УФМС?', tr:'Gde UFMS?', t:'Where is the migration service?'},
+{w:'Мне нужна регистрация', tr:'Mne nuzhna registratsiya', t:'I need registration'},
+{w:'Как получить патент?', tr:'Kak poluchit\' patent?', t:'How to get a work permit?'},
+{w:'Когда истекает срок действия визы?', tr:'Kogda istekayet viza?', t:'When does the visa expire?'},
+{w:'Продлите визу, пожалуйста', tr:'Prodlite vizu, pozhaluysta', t:'Please extend my visa'},
+{w:'Где сдать документы?', tr:'Gde sdat\' dokumenty?', t:'Where to submit documents?'},
+{w:'Я гражданин [страны]', tr:'Ya grazhdanin [strany]', t:'I am a citizen of [country]'},
+{w:'Мне нужна помощь', tr:'Mne nuzhna pomoshch\'', t:'I need help'},
+{w:'Сколько стоит патент?', tr:'Skolko stoit patent?', t:'How much is the work permit?'},
+{w:'Где ближайший МФЦ?', tr:'Gde blizhayshiy MFTs?', t:'Where is the nearest MFC?'}
+],
+daily: [
+{w:'Доброе утро!', tr:'Dobroye utro!', t:'Good morning!'},
+{w:'Как дела?', tr:'Kak dela?', t:'How are you?'},
+{w:'Всё хорошо', tr:'Vsyo khorosho', t:'Everything is fine'},
+{w:'Не очень', tr:'Ne ochen\'', t:'Not very well'},
+{w:'Как вас зовут?', tr:'Kak vas zovut?', t:'What is your name?'},
+{w:'Меня зовут...', tr:'Menya zovut...', t:'My name is...'},
+{w:'Откуда вы?', tr:'Otkuda vy?', t:'Where are you from?'},
+{w:'Я из...', tr:'Ya iz...', t:'I am from...'},
+{w:'Сколько лет?', tr:'Skolko let?', t:'How old are you?'},
+{w:'Где вы живёте?', tr:'Gde vy zhivyote?', t:'Where do you live?'},
+{w:'Я живу в...', tr:'Ya zhivu v...', t:'I live in...'},
+{w:'Вы говорите по-английски?', tr:'Vy govorite po-angliyski?', t:'Do you speak English?'}
+],
+work: [
+{w:'Я ищу работу', tr:'Ya ishchu rabotu', t:'I am looking for a job'},
+{w:'У меня есть опыт', tr:'U menya yest\' opyt', t:'I have experience'},
+{w:'Какая зарплата?', tr:'Kakaya zarplata?', t:'What is the salary?'},
+{w:'Когда начинать?', tr:'Kogda nachiniat\'?', t:'When to start?'},
+{w:'Мне нужен трудовой договор', tr:'Mne nuzhen trudovoy dogovor', t:'I need an employment contract'},
+{w:'Официальное оформление?', tr:'Ofitsialnoe oformleniye?', t:'Official employment?'},
+{w:'Где получить аванс?', tr:'Gde poluchit\' avans?', t:'Where to get advance payment?'},
+{w:'Я заболел, не приду', tr:'Ya zabolel, ne pridu', t:'I am sick, I will not come'},
+{w:'Могу я взять отпуск?', tr:'Mogu ya vzyat\' otpusk?', t:'Can I take a vacation?'},
+{w:'Уволить по соглашению', tr:'Uvolit\' po soglasheniyu', t:'Dismiss by agreement'}
+]
+};
+
+const historyData = [
+{ year: 862, era: 'ancient', title: 'Призвание Рюрика', ruler: 'Рюрик', years: '862-879', desc: 'Начало русской государственности. Варяжский князь Рюрик призван в Новгород племенами. Основал династию Рюриковичей.', map: '🗺️ Древняя Русь' },
+{ year: 882, era: 'ancient', title: 'Объединение Руси', ruler: 'Олег Вещий', years: '879-912', desc: 'Князь Олег захватил Киев, объединил северные и южные земли. Киев стал «матерью городов русских».', map: '🗺️ Киевская Русь' },
+{ year: 911, era: 'ancient', title: 'Договор с Византией', ruler: 'Олег Вещий', years: '879-912', desc: 'Первый международный договор Руси с Константинополем о торговле и мире.', map: '🗺️ Киевская Русь' },
+{ year: 945, era: 'ancient', title: 'Реформы Ольги', ruler: 'Ольга', years: '945-964', desc: 'Первая христианка среди правителей. Упорядочила сбор налогов (уроков и погостов). Посетила Константинополь.', map: '🗺️ Киевская Русь' },
+{ year: 988, era: 'ancient', title: 'Крещение Руси', ruler: 'Владимир I Святой', years: '980-1015', desc: 'Принятие христианства как государственной религии. Массовое крещение жителей Киева в Днепре.', map: '🗺️ Киевская Русь' },
+{ year: 1019, era: 'ancient', title: 'Русская правда', ruler: 'Ярослав Мудрый', years: '1019-1054', desc: 'Создание первого письменного свода законов. Расцвет Киевской Руси. Международные браки.', map: '🗺️ Киевская Русь' },
+{ year: 1113, era: 'ancient', title: 'Повесть временных лет', ruler: 'Владимир Мономах', years: '1113-1125', desc: 'Нестор-летописец создаёт главную летопись. Мономах пишет «Поучение детям».', map: '🗺️ Киевская Русь' },
+{ year: 1147, era: 'ancient', title: 'Первое упоминание Москвы', ruler: 'Юрий Долгорукий', years: '1125-1157', desc: 'Первое летописное упоминание Москвы 4 апреля 1147 года.', map: '🗺️ Владимиро-Суздальское кн.' },
+{ year: 1185, era: 'ancient', title: 'Слово о полку Игореве', ruler: 'Игорь Новгород-Северский', years: '1185', desc: 'Поход князя Игоря на половцев. Выдающийся памятник древнерусской литературы.', map: '🗺️ Русь' },
+{ year: 1223, era: 'mongol', title: 'Битва на Калке', ruler: 'Мстислав Удатный', years: '1223', desc: 'Первое столкновение русских войск с монголами. Сокрушительное поражение. Предвестник нашествия.', map: '🗺️ Перед нашествием' },
+{ year: 1237, era: 'mongol', title: 'Нашествие Батыя', ruler: 'Батый', years: '1237-1240', desc: 'Монгольское нашествие. Разорены Рязань, Владимир, Суздаль. Начало 240-летнего ордынского ига.', map: '🗺️ Золотая Орда' },
+{ year: 1240, era: 'mongol', title: 'Невская битва', ruler: 'Александр Невский', years: '1252-1263', desc: '15 июля 1240 года. Александр разбил шведов при впадении Ижоры в Неву. Получил прозвище «Невский».', map: '🗺️ Новгородская республика' },
+{ year: 1242, era: 'mongol', title: 'Ледовое побоище', ruler: 'Александр Невский', years: '1252-1263', desc: '5 апреля 1242 года. Разгром Ливонского ордена на льду Чудского озера. Остановлено немецкое завоевание.', map: '🗺️ Новгородская республика' },
+{ year: 1325, era: 'moscow', title: 'Возвышение Москвы', ruler: 'Иван I Калита', years: '1325-1340', desc: 'Иван Калита получил право собирать дань для Орды. Москва стала политическим центром Руси.', map: '🗺️ Московское княжество' },
+{ year: 1380, era: 'moscow', title: 'Куликовская битва', ruler: 'Дмитрий Донской', years: '1359-1389', desc: '8 сентября 1380 года. Первая крупная победа над ордынцами. Символ начала освобождения.', map: '🗺️ Московское княжество' },
+{ year: 1462, era: 'moscow', title: 'Объединение земель', ruler: 'Иван III Великий', years: '1462-1505', desc: 'Присоединение Новгорода, Твери, Ярославля. Формирование единого государства.', map: '🗺️ Московское государство' },
+{ year: 1480, era: 'moscow', title: 'Конец ордынского ига', ruler: 'Иван III', years: '1462-1505', desc: '«Стояние на Угре». Ордынцы ушли без боя. Конец 240-летнего монгольского владычества.', map: '🗺️ Московское государство' },
+{ year: 1497, era: 'moscow', title: 'Судебник Ивана III', ruler: 'Иван III', years: '1462-1505', desc: 'Первый общерусский свод законов. Введение Юрьева дня (ограничение перехода крестьян).', map: '🗺️ Московское государство' },
+{ year: 1547, era: 'moscow', title: 'Венчание Ивана Грозного на царство', ruler: 'Иван IV Грозный', years: '1533-1584', desc: '16 января 1547 года. Первый официальный царь. Опричнина (1565-1572). Завоевание Казани и Астрахани.', map: '🗺️ Русское царство' },
+{ year: 1552, era: 'moscow', title: 'Взятие Казани', ruler: 'Иван IV', years: '1533-1584', desc: 'Взятие Казанского ханства. Расширение на восток. В честь победы построен Собор Василия Блаженного.', map: '🗺️ Русское царство' },
+{ year: 1564, era: 'moscow', title: 'Первая печатная книга', ruler: 'Иван IV', years: '1533-1584', desc: 'Иван Фёдоров печатает «Апостол» — первую русскую датированную книгу.', map: '🗺️ Русское царство' },
+{ year: 1581, era: 'moscow', title: 'Поход Ермака в Сибирь', ruler: 'Иван IV', years: '1533-1584', desc: 'Казачий атаман Ермак начинает покорение Сибирского ханства. Начало освоения Сибири.', map: '🗺️ Русское царство' },
+{ year: 1598, era: 'moscow', title: 'Смутное время', ruler: 'Борис Годунов', years: '1598-1605', desc: 'Пресечение династии Рюриковичей. Самозванцы, иностранная интервенция, голод.', map: '🗺️ Смутное время' },
+{ year: 1612, era: 'moscow', title: 'Освобождение Москвы', ruler: 'Минин и Пожарский', years: '1612', desc: '4 ноября 1612 года. Народное ополчение освободило Москву от польских захватчиков.', map: '🗺️ Смутное время' },
+{ year: 1613, era: 'moscow', title: 'Избрание Романовых', ruler: 'Михаил Фёдорович', years: '1613-1645', desc: 'Земский собор избрал 16-летнего Михаила Романова царём. Начало 300-летней династии.', map: '🗺️ Русское царство' },
+{ year: 1649, era: 'moscow', title: 'Соборное уложение', ruler: 'Алексей Михайлович', years: '1645-1676', desc: 'Новый свод законов. Окончательное закрепощение крестьян. Бессрочный розыск беглых.', map: '🗺️ Русское царство' },
+{ year: 1703, era: 'empire', title: 'Основание Санкт-Петербурга', ruler: 'Пётр I Великий', years: '1682-1725', desc: '16 мая 1703 года. Новая столица на берегу Невы. Окно в Европу.', map: '🗺️ Российская империя' },
+{ year: 1709, era: 'empire', title: 'Полтавская битва', ruler: 'Пётр I', years: '1682-1725', desc: '27 июня 1709 года. Разгром армии Карла XII. Перелом в Северной войне.', map: '🗺️ Российская империя' },
+{ year: 1721, era: 'empire', title: 'Провозглашение империи', ruler: 'Пётр I', years: '1682-1725', desc: 'Пётр I принял титул Императора. Россия стала империей. Созданы Сенат и Синод.', map: '🗺️ Российская империя' },
+{ year: 1755, era: 'empire', title: 'Открытие МГУ', ruler: 'Елизавета I', years: '1741-1762', desc: '25 января 1755 года. Ломоносов и Шувалов основали Московский университет.', map: '🗺️ Российская империя' },
+{ year: 1762, era: 'empire', title: 'Екатерина II — Великая', ruler: 'Екатерина II Великая', years: '1762-1796', desc: '"Золотой век" дворянства. Просвещённый абсолютизм. Расширение территории.', map: '🗺️ Российская империя' },
+{ year: 1783, era: 'empire', title: 'Присоединение Крыма', ruler: 'Екатерина II', years: '1762-1796', desc: 'Присоединение Крыма после победы над Турцией. Потёмкин — губернатор Тавриды.', map: '🗺️ Российская империя' },
+{ year: 1812, era: 'empire', title: 'Отечественная война', ruler: 'Александр I', years: '1801-1825', desc: 'Вторжение Наполеона. Бородинское сражение. Пожар Москвы. Разгром французов.', map: '🗺️ Российская империя' },
+{ year: 1825, era: 'empire', title: 'Восстание декабристов', ruler: 'Николай I', years: '1825-1855', desc: '14 декабря 1825 года. Первое революционное выступление дворян за конституцию.', map: '🗺️ Российская империя' },
+{ year: 1837, era: 'empire', title: 'Первая ж/д в России', ruler: 'Николай I', years: '1825-1855', desc: 'Открытие Царскосельской железной дороги Петербург — Царское Село.', map: '🗺️ Российская империя' },
+{ year: 1861, era: 'empire', title: 'Отмена крепостного права', ruler: 'Александр II Освободитель', years: '1855-1881', desc: '19 февраля 1861 года. Освобождение 23 миллионов крестьян. Важнейшая реформа XIX века.', map: '🗺️ Российская империя' },
+{ year: 1891, era: 'empire', title: 'Транссибирская магистраль', ruler: 'Александр III', years: '1881-1894', desc: 'Начало строительства Транссиба — самой длинной ж/д в мире (9288 км).', map: '🗺️ Российская империя' },
+{ year: 1905, era: 'revolution', title: 'Первая революция', ruler: 'Николай II', years: '1894-1917', desc: 'Кровавое воскресенье. Всеобщая забастовка. Создание Государственной думы.', map: '🗺️ Российская империя' },
+{ year: 1914, era: 'revolution', title: 'Первая мировая война', ruler: 'Николай II', years: '1894-1917', desc: '1 августа 1914 года. Россия вступила в войну. 3 млн погибших.', map: '🗺️ Российская империя' },
+{ year: 1917, era: 'revolution', title: 'Февральская революция', ruler: 'Николай II', years: '1894-1917', desc: 'Февраль 1917 года. Свержение монархии. Отречение Николая II. Временное правительство.', map: '🗺️ Революция' },
+{ year: 1917, era: 'revolution', title: 'Октябрьская революция', ruler: 'В. И. Ленин', years: '1917-1924', desc: '25 октября 1917 года. Большевики захватили власть. Совет народных комиссаров.', map: '🗺️ РСФСР' },
+{ year: 1918, era: 'ussr', title: 'Гражданская война', ruler: 'В. И. Ленин', years: '1917-1924', desc: 'Война красных и белых. 1918–1922. Победа большевиков. 5 млн погибших.', map: '🗺️ РСФСР' },
+{ year: 1922, era: 'ussr', title: 'Образование СССР', ruler: 'В. И. Ленин', years: '1917-1924', desc: '30 декабря 1922 года. Объединение РСФСР, Украины, Белоруссии, Закавказья.', map: '🗺️ СССР' },
+{ year: 1929, era: 'ussr', title: 'Коллективизация', ruler: 'И.В. Сталин', years: '1924-1953', desc: 'Принудительное создание колхозов. Голод 1932-33. Индустриализация.', map: '🗺️ СССР' },
+{ year: 1934, era: 'ussr', title: 'Метро в Москве', ruler: 'И. В. Сталин', years: '1924-1953', desc: '15 мая 1935 года открылась первая линия Московского метрополитена.', map: '🗺️ СССР' },
+{ year: 1941, era: 'ussr', title: 'Великая Отечественная война', ruler: 'И. В. Сталин', years: '1924-1953', desc: '22 июня 1941 года. Нацистская Германия напала на СССР. Блокада Ленинграда, Сталинградская битва.', map: '🗺️ СССР' },
+{ year: 1943, era: 'ussr', title: 'Сталинградская битва', ruler: 'И.В. Сталин', years: '1924-1953', desc: '17 июля 1942 — 2 февраля 1943. Крупнейшее сражение ВМВ. Коренной перелом.', map: '🗺️ СССР' },
+{ year: 1945, era: 'ussr', title: 'Победа в Великой войне', ruler: 'И. В. Сталин', years: '1924-1953', desc: '9 мая 1945 года. Капитуляция Германии. День Победы — главный праздник России.', map: '🗺️ СССР' },
+{ year: 1957, era: 'ussr', title: 'Первый спутник', ruler: 'Н.С. Хрущёв', years: '1953-1964', desc: '4 октября 1957 года. Запуск первого искусственного спутника Земли. Начало космической эры.', map: '🗺️ СССР' },
+{ year: 1961, era: 'ussr', title: 'Гагарин в космосе', ruler: 'Н.С. Хрущёв', years: '1953-1964', desc: '12 апреля 1961 года. Юрий Гагарин — первый человек в космосе. «Поехали!»', map: '🗺️ СССР' },
+{ year: 1980, era: 'ussr', title: 'Олимпиада в Москве', ruler: 'Л.И. Брежнев', years: '1964-1982', desc: 'XXII летние Олимпийские игры в Москве. Бойкот 65 стран из-за Афганистана.', map: '🗺️ СССР' },
+{ year: 1986, era: 'ussr', title: 'Чернобыльская авария', ruler: 'М.С. Горбачёв', years: '1985-1991', desc: '26 апреля 1986 года. Авария на Чернобыльской АЭС. Крупнейшая ядерная катастрофа.', map: '🗺️ СССР' },
+{ year: 1991, era: 'ussr', title: 'Распад СССР', ruler: 'М.С. Горбачёв', years: '1985-1991', desc: '25 декабря 1991 года. СССР прекратил существование. Образование СНГ и 15 государств.', map: '🗺️ Российская Федерация' },
+{ year: 1993, era: 'rf', title: 'Принятие Конституции РФ', ruler: 'Б.Н. Ельцин', years: '1991-1999', desc: '12 декабря 1993 года. Принята действующая Конституция России. Установлена президентская республика.', map: '🗺️ Российская Федерация' },
+{ year: 1999, era: 'rf', title: 'Вторая чеченская война', ruler: 'Б. Н. Ельцин / В. В. Путин', years: '1999-2009', desc: 'Сентябрь 1999 года. Контртеррористическая операция на Северном Кавказе.', map: '🗺️ Российская Федерация' },
+{ year: 2000, era: 'rf', title: 'Избрание В.В. Путина', ruler: 'В.В. Путин', years: '2000-н.в.', desc: '26 марта 2000 года. Путин избран президентом РФ. Стабилизация экономики.', map: '🗺️ Российская Федерация' },
+{ year: 2014, era: 'rf', title: 'Воссоединение с Крымом', ruler: 'В. В. Путин', years: '2014-н.в.', desc: '18 марта 2014 года. Подписание договора о принятии Республики Крым в состав РФ.', map: '🗺️ Российская Федерация' },
+{ year: 2018, era: 'rf', title: 'ЧМ по футболу', ruler: 'В.В. Путин', years: '2018', desc: 'Россия провела ЧМ FIFA 2018. Сборная вышла в 1/4 финала. 11 городов-организаторов.', map: '🗺️ Российская Федерация' },
+{ year: 2020, era: 'rf', title: 'Поправки к Конституции', ruler: 'В.В. Путин', years: '2020', desc: '1 июля 2020 года. Поправки приняты на голосовании. В том числе о суверенитете.', map: '🗺️ Российская Федерация' }
+];
+const historyEras = { all: 'Все эпохи', ancient: '🏰 Древняя Русь', mongol: '⚔️ Монгольское иго', moscow: '🦅 Московская Русь', empire: '👑 Российская империя', revolution: '⭐ Революция', ussr: '🚀 СССР', rf: '🇷🇺 Российская Федерация' };
+const rulersData = {
+'Рюрик': { portrait:'👑', bio:'Варяжский князь, основатель династии Рюриковичей.', achievements:['Основание русской государственности','Объединение племён','Новгородское княжество'] },
+'Олег Вещий': { portrait:'🛡️', bio:'Князь-регент, объединивший Киев и Новгород.', achievements:['Захват Киева (882)','Походы на Царьград','Договор с Византией (911)'] },
+'Владимир I Святой': { portrait:'✝️', bio:'Великий князь, крестивший Русь.', achievements:['Крещение Руси (988)','Строительство церквей','Укрепление обороны'] },
+'Ярослав Мудрый': { portrait:'📚', bio:'Великий князь, при котором расцвела Киевская Русь.', achievements:['Русская Правда','Киево-Печерская лавра','Международные браки'] },
+'Юрий Долгорукий': { portrait:'🏰', bio:'Основатель Москвы, суздальский князь.', achievements:['Основание Москвы (1147)','Борьба за Киев'] },
+'Александр Невский': { portrait:'⚔️', bio:'Национальный герой, защитник западных границ.', achievements:['Невская битва (1240)','Ледовое побоище (1242)','Умелая политика с ордой'] },
+'Дмитрий Донской': { portrait:'🗡️', bio:'Победитель Мамая на Куликовом поле.', achievements:['Куликовская битва (1380)','Белокаменный Кремль'] },
+'Иван III Великий': { portrait:'🦅', bio:'Объединитель русских земель.', achievements:['Конец ордынского ига (1480)','Судебник (1497)','Присоединение Новгорода'] },
+'Иван IV Грозный': { portrait:'👁️', bio:'Первый царь всея Руси.', achievements:['Венчание на царство (1547)','Взятие Казани','Опричнина','Судебник 1550'] },
+'Пётр I Великий': { portrait:'⚓', bio:'Великий реформатор, создатель Российской империи.', achievements:['Флот и армия','Санкт-Петербург','Победа в Северной войне','Европеизация'] },
+'Екатерина II Великая': { portrait:'👑', bio:'"Матушка-царица", просвещённая монархиня.', achievements:['Присоединение Крыма','Разделы Польши','Культурный расцвет'] },
+'Александр I': { portrait:'🎖️', bio:'Победитель Наполеона, либеральный реформатор.', achievements:['Победа 1812 года','Священный союз'] },
+'Александр II Освободитель': { portrait:'🕊️', bio:'Царь-реформатор.', achievements:['Отмена крепостного права (1861)','Земская реформа','Судебная реформа'] },
+'Николай II': { portrait:'👑', bio:'Последний российский император.', achievements:['Транссиб','Индустриализация'] },
+'В.И. Ленин': { portrait:'⭐', bio:'Лидер большевиков, основатель СССР.', achievements:['Октябрьская революция (1917)','Создание СССР (1922)','НЭП'] },
+'И.В. Сталин': { portrait:'🌟', bio:'Генеральный секретарь ЦК КПСС.', achievements:['Индустриализация','Победа в ВОВ (1945)','Ядерная бомба'] },
+'Н.С. Хрущёв': { portrait:'🚀', bio:'"Оттепель" в советской политике.', achievements:['Первый спутник (1957)','Полёт Гагарина (1961)','Разоблачение культа личности'] },
+'М.С. Горбачёв': { portrait:'🕊️', bio:'Последний лидер СССР.', achievements:['Перестройка','Гласность','Конец холодной войны'] },
+'Б.Н. Ельцин': { portrait:'🇷🇺', bio:'Первый Президент РФ.', achievements:['Конституция 1993','Рыночные реформы'] },
+'В.В. Путин': { portrait:'🏛️', bio:'Президент РФ (2000-2008, 2012-н.в.).', achievements:['Стабилизация экономики','Рост ВВП 2000-х','ЧМ-2018'] }
+};
+
+const lawsData = [
+{ id:1, category:'конституция', number:'Конституция РФ Ст. 1', title:'Россия — демократическое государство', content:'Российская Федерация — демократическое федеративное правовое государство с республиканской формой правления. Наименования «Российская Федерация» и «Россия» равнозначны.' },
+{ id:2, category:'конституция', number:'Конституция РФ Ст. 2', title:'Высшая ценность — человек', content:'Человек, его права и свободы являются высшей ценностью. Признание, соблюдение и защита прав — обязанность государства.' },
+{ id:3, category:'конституция', number:'Конституция РФ Ст. 6', title:'Гражданство РФ', content:'Гражданство приобретается и прекращается в соответствии с федеральным законом. Гражданин не может быть лишен гражданства или права изменить его.' },
+{ id:4, category:'конституция', number:'Конституция РФ Ст. 15', title:'Высшая юридическая сила', content:'Конституция РФ имеет высшую юридическую силу. Законы не должны ей противоречить. Международные договоры — часть правовой системы.' },
+{ id:5, category:'конституция', number:'Конституция РФ Ст. 17', title:'Права и свободы', content:'Признаются и гарантируются права в соответствии с общепризнанными принципами международного права. Основные права неотчуждаемы и принадлежат каждому от рождения.' },
+{ id:6, category:'конституция', number:'Конституция РФ Ст. 27', title:'Свобода передвижения', content:'Каждый вправе свободно передвигаться, выбирать место пребывания и жительства. Каждый вправе свободно выезжать за пределы РФ.' },
+{ id:7, category:'конституция', number:'Конституция РФ Ст. 33', title:'Право на обращение', content:'Граждане вправе обращаться лично, а также направлять обращения в государственные органы и органы местного самоуправления. Важно для мигрантов!' },
+{ id:8, category:'конституция', number:'Конституция РФ Ст. 37', title:'Свобода труда', content:'Труд свободен. Принудительный труд запрещен. Каждый имеет право на вознаграждение не ниже МРОТ. Право на отдых гарантировано.' },
+{ id:9, category:'конституция', number:'Конституция РФ Ст. 41', title:'Право на охрану здоровья', content:'Каждый имеет право на охрану здоровья и медицинскую помощь. В государственных учреждениях помощь оказывается бесплатно.' },
+{ id:10, category:'конституция', number:'Конституция РФ Ст. 43', title:'Право на образование', content:'Каждый имеет право на образование. Гарантируется бесплатность и общедоступность дошкольного и среднего образования.' },
+{ id:11, category:'миграция', number:'ФЗ №115 Ст. 2', title:'Иностранный гражданин', content:'Иностранный гражданин — лицо, не являющееся гражданином РФ и имеющее гражданство иностранного государства. Лицо без гражданства — апатрид.' },
+{ id:12, category:'миграция', number:'ФЗ №115 Ст. 5', title:'Временное пребывание', content:'Срок временного пребывания без визы — не более 90 суток в течение 180 суток. Для граждан ЕАЭС — до 90 дней с возможностью продления.' },
+{ id:13, category:'миграция', number:'ФЗ №115 Ст. 6', title:'Временное проживание (РВП)', content:'РВП выдается сроком на 3 года. Дает право работать без патента. Квоты устанавливаются ежегодно Правительством РФ.' },
+{ id:14, category:'миграция', number:'ФЗ №115 Ст. 8', title:'Вид на жительство (ВНЖ)', content:'ВНЖ выдается на 5 лет с возможностью продления. Дает права, близкие к гражданским. Требует непрерывного проживания в стране 6 месяцев в году.' },
+{ id:15, category:'миграция', number:'ФЗ №115 Ст. 11', title:'Передвижение иностранцев', content:'Иностранные граждане вправе свободно передвигаться по России, за исключением закрытых территорий. Обязаны уведомить принимающую сторону.' },
+{ id:16, category:'миграция', number:'ФЗ №115 Ст. 13', title:'Трудовая деятельность', content:'Иностранцы работают при наличии разрешения или патента. Граждане ЕАЭС (Беларусь, Казахстан, Армения, Кыргызстан) — без разрешения.' },
+{ id:17, category:'миграция', number:'ФЗ №115 Ст. 18.1', title:'Патент на работу', content:'Для безвизовых иностранцев. Выдается на срок от 1 до 12 месяцев, продлевается до 1 года. Необходимы: медкомиссия, тест по языку, истории, праву.' },
+{ id:18, category:'миграция', number:'ФЗ №109 Ст. 20', title:'Миграционный учет', content:'Прибывший иностранец обязан встать на учет в течение 7 рабочих дней (граждане ЕАЭС — 30 дней). Принимающая сторона уведомляет МВД.' },
+{ id:19, category:'иностранцы', number:'Приказ МВД №514', title:'Получение патента — документы', content:'Паспорт + нотариальный перевод, миграционная карта, полис ДМС, медсправка (ВИЧ, туберкулёз, кожные болезни), тест по русскому языку, истории, праву, фото.' },
+{ id:20, category:'иностранцы', number:'ФЗ №115 Ст. 5.1', title:'Продление пребывания', content:'Пребывание продлевается при наличии патента, РВП, ВНЖ, обучении, лечении или трудовом договоре с квотной должностью.' },
+{ id:21, category:'иностранцы', number:'ФЗ №115 Ст. 31', title:'Выезд из РФ', content:'Иностранец обязан выехать при окончании срока. При нарушении — запрет на въезд от 3 до 10 лет в зависимости от срока нарушения.' },
+{ id:22, category:'иностранцы', number:'ФЗ №115 Ст. 32.4', title:'Реадмиссия', content:'Россия заключила соглашения о реадмиссии с рядом стран. Нелегальных мигрантов могут выслать в страну их гражданства.' },
+{ id:23, category:'иностранцы', number:'ФЗ №62', title:'Гражданство РФ', content:'Общий порядок — 5 лет непрерывного проживания по ВНЖ. Упрощенный — носители русского языка, супруги, дети граждан РФ, участники госпрограмм.' },
+{ id:24, category:'труд', number:'ТК РФ Ст. 14', title:'МРОТ — минимальная заработная плата', content:'С 2024 года МРОТ = 19 242 руб./мес. Работодатель не вправе платить меньше. Региональные минимумы могут быть выше федерального.' },
+{ id:25, category:'труд', number:'ТК РФ Ст. 91', title:'Рабочее время', content:'Нормальная продолжительность — не более 40 часов в неделю. Сверхурочная работа — по соглашению сторон, не более 4 часов в течение 2 дней и 120 часов в год.' },
+{ id:26, category:'труд', number:'ТК РФ Ст. 115', title:'Ежегодный отпуск', content:'Минимальная продолжительность ежегодного оплачиваемого отпуска — 28 календарных дней. За работу во вредных условиях — дополнительно до 7 дней.' },
+{ id:27, category:'труд', number:'ТК РФ Ст. 133', title:'Оплата труда', content:'Зарплата выплачивается не реже 2 раз в месяц. Задержка зарплаты — нарушение ТК. Штраф для работодателя до 100 000 руб.' },
+{ id:28, category:'труд', number:'ТК РФ Ст. 327.2', title:'Трудовой договор с иностранцем', content:'В трудовой договор включаются: сведения о разрешении на работу/патенте, РВП/ВНЖ, полисе ДМС. Работодатель уведомляет МВД в течение 3 дней.' },
+{ id:29, category:'труд', number:'КоАП РФ Ст. 18.15', title:'Незаконное привлечение к труду', content:'Штраф работодателю за незаконное привлечение иностранца — 400 000–1 000 000 руб. или приостановление деятельности до 90 суток.' },
+{ id:30, category:'налоги', number:'НК РФ Ст. 207', title:'Налоговый резидент', content:'Налоговый резидент — лицо, находящееся в РФ более 183 дней в году. Ставка НДФЛ для резидентов — 13%. Для нерезидентов — 30%.' },
+{ id:31, category:'налоги', number:'НК РФ Ст. 224', title:'НДФЛ для иностранцев', content:'Для граждан ЕАЭС, работающих по патенту, — ставка 13% с первого дня. Фиксированный авансовый платеж по патенту входит в состав НДФЛ.' },
+{ id:32, category:'налоги', number:'НК РФ Ст. 217', title:'Налогообложение доходов', content:'С зарплаты работодатель автоматически удерживает НДФЛ. Самозанятые платят 4% (физлица) или 6% (юрлица). Декларация 3-НДФЛ — до 30 апреля.' },
+{ id:33, category:'all', number:'КоАП РФ Ст. 18.8', title:'Нарушение режима пребывания', content:'Штраф 2 000–5 000 рублей. В Москве/Санкт-Петербурге — 5 000–7 000 рублей. с выдворением за пределы РФ.' },
+{ id:34, category:'all', number:'КоАП РФ Ст. 18.10', title:'Работа без разрешения', content:'Штраф для иностранца 2 000–5 000 руб. В Москве/СПб — до 7 000 руб. с административным выдворением.' },
+{ id:35, category:'all', number:'УК РФ Ст. 322', title:'Незаконное пересечение границы', content:'Штраф до 200 000 руб. или лишение свободы до 2 лет. Организация незаконной переправки — до 6 лет лишения свободы.' },
+{ id:36, category:'all', number:'КоАП РФ Ст. 18.11', title:'Неисполнение требований о регистрации', content:'Нарушение правил постановки на учет — штраф 2 000–5 000 руб. Повторно — выдворение.' },
+{ id:37, category:'all', number:'ФЗ №114 Ст. 27', title:'Основания запрета въезда', content:'Запрет въезда при: нарушении сроков (3 года), неоднократных нарушениях (5 лет), незаконной трудовой деятельности (10 лет).' },
+{ id:38, category:'all', number:'ФЗ №115 Ст. 26', title:'Нежелательное пребывание', content:'МВД вправе признать пребывание нежелательным при угрозе безопасности или общественному порядку. Срок запрета — от 3 до 10 лет.' }
+];
+
+const citiesData = [
+{ id:1, name:'Москва', emoji:'🏙️', pop:'13.1 млн', area:'2561 км²', climate:'Умеренно-континентальный. −6.5°C зимой, +19°C летом.', founded:1147, history:'Основана Юрием Долгоруким в 1147 году. С 1263 — центр княжества. С 1918 — столица СССР и РФ. Крупнейший мегаполис Европы.', mentality:'Динамичный ритм жизни, карьерная ориентация, многонациональность. Москвичи — люди занятые, прямые, ценят время.', traditions:'День города (первая суббота сентября), Масленица на Красной площади, Новый год у Кремля.', sights:'Красная площадь, Кремль, Третьяковская галерея, Большой театр, ВДНХ, Парк Горького, Арбат' },
+{ id:2, name:'Санкт-Петербург', emoji:'🏰', pop:'5,6 млн', area:'1439 км²', climate:'Умеренный морской. Белые ночи (июнь-июль). Дождливая осень.', founded:1703, history:'Основан Петром I 27 мая 1703 года. Столица Российской империи в 1712–1918 годах. Ленинград в советское время. 900 дней блокады во время Великой Отечественной войны.', mentality:'«Культурная столица». Интеллигентность, любовь к искусству, чуть медленнее, чем в Москве. "Питерский характер" — принципиальность.', traditions:'Алые паруса (выпускной), "Звёзды белых ночей", Мариинский фестиваль.', sights:'Эрмитаж, Петергоф, Исаакиевский собор, Невский проспект, Кунсткамера, Дворцовая площадь' },
+{ id:3, name:'Новосибирск', emoji:'🔬', pop:'1.63 млн', area:'506 км²', climate:'Резко-континентальный. −16.5°C зимой, +19°C летом.', founded:1893, history:'Основан в 1893 году при строительстве Транссибирской магистрали. Третий город России. Академгородок — крупнейший научный центр.', mentality:'Трудолюбие, научная направленность, сибирский характер. Открытость к новому.', traditions:'День города (последнее воскресенье июня), Сибирская масленица.', sights:'Театр оперы и балета, Академгородок, Новосибирский зоопарк, Площадь Ленина' },
+{ id:4, name:'Екатеринбург', emoji:'⚙️', pop:'1.54 млн', area:'495 км²', climate:'Континентальный. На границе Европы и Азии.', founded:1723, history:'Основан 18 ноября 1723 года как горно-металлургический завод. Место расстрела Николая II (1918). До 1991 года — Свердловск.', mentality:'Деловитость, промышленный дух, уральский характер. Четвёртая столица России.', traditions:'Уральская ночь музыки, фестиваль "Стенограффия".', sights:'Храм на Крови, небоскрёб "Высоцкий", граница Европа-Азия, Ельцин-центр' },
+{ id:5, name:'Казань', emoji:'🕌', pop:'1.31 млн', area:'425 км²', climate:'Умеренно-континентальный. −9 °C зимой, +20 °C летом.', founded:1005, history:'Более 1000 лет истории. С 1438 года — столица ханства. В 1552 году взят Иваном Грозным. Татарская столица в составе РФ.', mentality:'Толерантность, двойная культура — ислам и православие, татарский дух. «Третья столица России».', traditions:'Сабантуй (июнь) — татарский праздник труда и урожая.', sights:'Казанский Кремль (ЮНЕСКО), мечеть Кул-Шариф, улица Баумана, Свияжск, озеро Кабан' },
+{ id:6, name:'Нижний Новгород', emoji:'⚓', pop:'1,23 млн', area:'411 км²', climate:'Умеренно-континентальный.', founded:1221, history:'Основан в 1221 году как крепость. Важный торговый центр. Слияние Волги и Оки. 1932–1990 гг. — Горький.', mentality:'«Купеческий дух». Родина Максима Горького. Волжская ширь. Предприимчивость.', traditions:'Нижегородская ярмарка, фестиваль «Стрелка».', sights:'Кремль, Чкаловская лестница, канатная дорога через Волгу, Большая Покровская улица' },
+{ id:7, name:'Челябинск', emoji:'⚒️', pop:'1,19 млн', area:'530 км²', climate:'Резко континентальный.', founded:1736, history:'На стыке Урала и Сибири. Танковая столица Великой Отечественной войны («Танкоград»). В 2013 году здесь упал метеорит.', mentality:'Рабочий, стойкий, южноуральский. Простота и надёжность.', traditions:'День города (сентябрь), Уральский фестиваль.', sights:'Кировка (пешеходная зона), озеро Тургояк, Аркаим, Ильменский заповедник' },
+{ id:8, name:'Самара', emoji:'🚀', pop:'1,16 млн', area:'541 км²', climate:'Умеренно-континентальный. На берегу Волги.', founded:1586, history:'Основана в 1586 году как крепость. В годы ВОВ — запасная столица СССР. Центр советской космической промышленности.', mentality:'Волжский характер, открытость, гостеприимство. «Космическая столица».', traditions:'Грушинский фестиваль авторской песни, День Волги.', sights:'Самарская Лука (национальный парк), бункер Сталина, музей «Самара космическая», набережная Волги' },
+{ id:9, name:'Омск', emoji:'🌾', pop:'1,14 млн', area:'573 км²', climate:'Резко континентальный.', founded:1716, history:'Основан в 1716 году как крепость. Сибирский казачий центр. В 1918–1920 годах — столица Белого движения.', mentality:'Сибирская стойкость, трудолюбие, казачий дух.', traditions:'День города (август), Казачьи игры.', sights:'Успенский собор, Краеведческий музей, Музей Достоевского, Набережная Иртыша' },
+{ id:10, name:'Ростов-на-Дону', emoji:'🌻', pop:'1,14 млн', area:'354 км²', climate:'Умеренный. Близость к Азовскому морю. Летом +24 °C.', founded:1749, history:'Основан 15 декабря 1749 года. Ворота Кавказа. Купеческий город. В ВОВ — дважды занят немцами.', mentality:'Южный темперамент, открытость, торговая жилка, казачья вольность.', traditions:'Донская масленица, Шолоховская весна.', sights:'Набережная Дона, театр драмы, Новочеркасск, Азовское море' },
+{ id:11, name:'Уфа', emoji:'🐝', pop:'1.13 млн', area:'708 км²', climate:'Континентальный. −13°C зимой, +20°C летом.', founded:1574, history:'Основана в 1574 году как крепость. Столица Республики Башкортостан. Многонациональный город.', mentality:'Многонациональность (башкиры, русские, татары), традиционные ценности.', traditions:'Сабантуй, Масленица, башкирские народные праздники.', sights:'Памятник Салавату Юлаеву, мечеть Ляля-Тюльпан, гора Нурали, Башкирский заповедник' },
+{ id:12, name:'Красноярск', emoji:'🌲', pop:'1,1 млн', area:'354 км²', climate:'Резко континентальный. Сибирский климат.', founded:1628, history:'Основан в 1628 году как острог. Центр Красноярского края — крупнейшего региона России. Принимал Универсиаду 2019.', mentality:'Любовь к природе, сибирский характер, экологическое сознание.', traditions:'Фестиваль "Мир Сибири", Универсиада (2019).', sights:'Заповедник "Столбы", часовня Параскевы Пятницы (на 10-рублёвой купюре), набережная Енисея' },
+{ id:13, name:'Воронеж', emoji:'🚢', pop:'1.06 млн', area:'596 км²', climate:'Умеренно-континентальный.', founded:1586, history:'Основан в 1586 году как крепость. Родина русского военно-морского флота (Петр I строил здесь флот). Практически разрушен во время Великой Отечественной войны.', mentality:'Трудолюбие, патриотизм, студенческий город.', traditions:'День города (сентябрь), Платоновский фестиваль.', sights:'Адмиралтейская площадь, корабль-музей «Гото Предестинация», Акатов монастырь' },
+{ id:14, name:'Пермь', emoji:'🎨', pop:'1,06 млн', area:'800 км²', climate:'Умеренно-континентальный. Больше осадков.', founded:1723, history:'Основана в 1723 году как медеплавильный завод. Промышленный центр. «Культурная революция» 2000-х.', mentality:'Интеллигентность, креативность. Родина Дягилева.', traditions:'Фестиваль "Белые ночи", Дягилевский фестиваль.', sights:'Художественная галерея, набережная Камы, Музей-завод "Горнозаводская цивилизация", "Пермь-36"' },
+{ id:15, name:'Волгоград', emoji:'🗽', pop:'1.02 млн', area:'859 км²', climate:'Умеренный. Жаркое лето +24 °C, холодная зима.', founded:1589, history:'Основан как Царицын. 1925–1961 — Сталинград. Крупнейшее сражение Второй мировой войны (1942–1943). Город-герой.', mentality:'Память о войне, патриотизм, героизм предков.', traditions:'9 Мая — главный праздник. Международный конкурс фейерверков.', sights:'Мамаев курган, «Родина-мать зовёт!» (85 м), панорама Сталинградской битвы, руины мельницы' },
+{ id:16, name:'Краснодар', emoji:'🌾', pop:'1,05 млн', area:'841 км²', climate:'Умеренный субтропический. Тёплая зима, жаркое лето.', founded:1793, history:'Основан в 1793 году как Екатеринодар — дар Екатерины II казакам. Столица Краснодарского края.', mentality:'Южное гостеприимство, казачий дух, аграрная культура.', traditions:'Кубанская Масленица, Праздник первого снопа.', sights:'Краснодарский стадион (КФК), парк "Краснодар", Свято-Екатерининский собор' },
+{ id:17, name:'Саратов', emoji:'🎓', pop:'0.84 млн', area:'394 км²', climate:'Умеренно-континентальный. На Волге.', founded:1590, history:'Основан в 1590 году как крепость. Родина Юрия Гагарина (приземлился здесь). Крупный университетский город.', mentality:'Студенческий дух, интеллигентность, волжский характер.', traditions:'Праздник первой рыбы, фестиваль «Волга-фест».', sights:'Набережная Волги, Радищевский музей, консерватория, Свято-Троицкий собор' },
+{ id:18, name:'Тюмень', emoji:'🛢️', pop:'0,85 млн', area:'698 км²', climate:'Континентальный. Первый русский город в Сибири.', founded:1586, history:'Первый русский город в Сибири (1586). Ворота в Сибирь. Нефтяная столица России.', mentality:'Предприимчивость, богатство нефтяного региона.', traditions:'День Тюмени, Сибирская Масленица.', sights:'Исторический квартал, Цветной бульвар, Тобольский кремль (рядом), термальные источники' },
+{ id:19, name:'Тольятти', emoji:'🚗', pop:'0,68 млн', area:'314 км²', climate:'Умеренно-континентальный. На Волге.', founded:1737, history:'Основан в 1737 году. С 1966 года — автомобильная столица России (ВАЗ/LADA). Назван в честь итальянского коммуниста Тольятти.', mentality:'Промышленный рабочий характер, автомобильная идентичность.', traditions:'День автомобилиста, фестиваль «АвтоВАЗ».', sights:'Музей АвтоВАЗа, Жигулёвская ГЭС, Жигулёвские горы, Ставрополь-на-Волге' },
+{ id:20, name:'Ижевск', emoji:'🔫', pop:'0.65 млн', area:'603 км²', climate:'Умеренно-континентальный. Предуральский.', founded:1760, history:'Основан в 1760 году как металлургический завод. Родина Калашникова (АК-47). Столица Удмуртии.', mentality:'Промышленный характер, многонациональность, гордость изобретателей.', traditions:'Сабантуй, День оружейника.', sights:'Музей Калашникова, мотозавод «Ижмаш», набережная Ижевского пруда' },
+{ id:21, name:'Барнаул', emoji:'🌻', pop:'0,63 млн', area:'321 км²', climate:'Резко континентальный. Алтайский.', founded:1730, history:'Основан в 1730 году как сереброплавильный завод. Столица Алтайского края. Ворота в Горный Алтай.', mentality:'Спокойный характер, близость к природе, алтайская самобытность.', traditions:'День города, фестиваль «Шукшинские дни».', sights:'Нагорный парк, Демидовская площадь, Горный Алтай рядом' },
+{ id:22, name:'Владивосток', emoji:'⚓', pop:'0,61 млн', area:'562 км²', climate:'Муссонный. Мягкая зима, влажное лето.', founded:1860, history:'Основан в 1860 году как военный пост. Главный тихоокеанский порт России. «Владей востоком».', mentality:'Морской характер, независимость, азиатское влияние, близость к Японии и Корее.', traditions:'День Тихоокеанского флота, фестиваль «Владивосток 3000».', sights:'Бухта Золотой Рог, Русский остров, мост «Русский», Приморский океанариум' },
+{ id:23, name:'Хабаровск', emoji:'🦅', pop:'0.62 млн', area:'386 км²', climate:'Муссонный. Холодная зима, жаркое лето.', founded:1858, history:'Основан в 1858 году как военный пост. Административный центр Дальнего Востока. На границе с Китаем.', mentality:'Дальневосточный характер, граничащая с открытостью, воинственность.', traditions:'День Хабаровска, фестиваль «Рыбный день».', sights:'Амурский утес, набережная Амура, Гродековский музей' },
+{ id:24, name:'Великий Новгород', emoji:'📜', pop:'0,22 млн', area:'91 км²', climate:'Умеренно-континентальный.', founded:859, history:'Основан в 859 году — один из древнейших городов Руси. Новгородская республика. Место призвания Рюрика.', mentality:'Историческое самосознание, гордость за древность, туристическое мышление.', traditions:'Праздник «Садко», День Новгорода.', sights:'Новгородский кремль, Ярославово дворище (ЮНЕСКО), Витославлицы' },
+{ id:25, name:'Сочи', emoji:'🌴', pop:'0,47 млн', area:'3502 км²', climate:'Субтропический. Самый тёплый город России. Зимой +14 °C.', founded:1838, history:'Основан в 1838 году как крепость. Курортная столица СССР. Олимпийские игры 2014.', mentality:'Курортная открытость, гостеприимство, смешение культур.', traditions:'Открытие курортного сезона, Зимний фестиваль.', sights:'Олимпийский парк, Роза Хутор, Воронцовские пещеры, пляжи Чёрного моря' }
+];
+
+const testsData = {
+russian: [
+{q:'Сколько букв в русском алфавите?', a:['30','33','36','29'], c:1},
+{q:'Какой падеж отвечает на вопрос «кого? чего?»', a:['Именительный','Родительный','Дательный','Винительный'], c:1},
+{q:'Выберите глагол совершенного вида', a:['читать','писать','прочитать','говорить'], c:2},
+{q:'Как сказать «доброе утро» по-русски?', a:['Добрый вечер','Доброй ночи','Доброе утро','Добрый день'], c:2},
+{q:'Укажите правильное написание', a:['жызнь','жизнь','жезнь','жизн'], c:1},
+{q:'Какое местоимение 2-го лица единственного числа?', a:['он','мы','ты','вы'], c:2},
+{q:'«Я __ в Москве» — выберите правильную форму', a:['живу','живёшь','живёт','живём'], c:0},
+{q:'Какой предлог используется для места (где)?', a:['к','на/в + Предложный','из','до'], c:1},
+{q:'Существительное «ночь» — какого рода?', a:['Мужского','Женского','Среднего','Общего'], c:1},
+{q:'Что означает «пожалуйста»?', a:['Спасибо','Please / You\'re welcome','Извините','Привет'], c:1},
+{q:'Как написать «25» словами?', a:['двадцать четыре','пятнадцать два','двадцать пять','два десять пять'], c:2},
+{q:'«Вы» используется для:', a:['Неформального общения','Уважительного обращения','Детей','Животных'], c:1},
+{q:'Глагол «читать» — какого спряжения?', a:['I спряжение','II спряжение','III спряжение','Нет спряжения'], c:0},
+{q:'Выберите правильный вариант с ЖИ/ШИ:', a:['жыть','машына','машина','лыжы'], c:2},
+{q:'Какой падеж при предлоге «в» (место)?', a:['Родительный','Дательный','Предложный','Творительный'], c:2},
+{q:'«Большой» — это:', a:['Существительное','Глагол','Прилагательное','Наречие'], c:2},
+{q:'Что такое «тире» в предложении «Москва — столица»?', a:['Знак препинания между однородными членами','Знак между подлежащим и сказуемым-сущ.','Запятая перед союзом','Конец предложения'], c:1},
+{q:'«Мне нужна помощь» — перевод?', a:['I am helping','I need help','Help me now!','I can help'], c:1},
+{q:'Вопрос «Где?» требует падежа:', a:['Винительного','Родительного','Предложного','Дательного'], c:2},
+{q:'Правильное окончание «говорить» для «мы»:', a:['говорим','говорят','говорите','говорю'], c:0}
+],
+history: [
+{q:'В каком году произошло Крещение Руси?', a:['988','862','1147','1380'], c:0},
+{q:'Кто был первым официальным царём России?', a:['Иван III','Иван IV Грозный','Пётр I','Борис Годунов'], c:1},
+{q:'Когда основан Санкт-Петербург?', a:['1703','1712','1682','1721'], c:0},
+{q:'Кто был первым человеком в космосе?', a:['Герман Титов','Юрий Гагарин','Алексей Леонов','Валентина Терешкова'], c:1},
+{q:'Когда распался СССР?', a:['1989','1990','1991','1993'], c:2},
+{q:'В каком году произошла Куликовская битва?', a:['1380','1242','1480','1237'], c:0},
+{q:'Кто освободил Москву от поляков в 1612 году?', a:['Минин и Пожарский','Суворов','Кутузов','Ермак'], c:0},
+{q:'Когда отменили крепостное право?', a:['1825','1861','1905','1917'], c:1},
+{q:'В каком году началась Великая Отечественная война?', a:['1939','1941','1942','1944'], c:1},
+{q:'Кто был первым Президентом России?', a:['Путин','Медведев','Ельцин','Горбачёв'], c:2},
+{q:'Какой год — конец ордынского ига?', a:['1380','1480','1547','1242'], c:1},
+{q:'Кто основал Санкт-Петербург?', a:['Екатерина II','Александр I','Пётр I','Иван III'], c:2},
+{q:'Что произошло 9 мая 1945 года?', a:['Начало ВОВ','Блокада Ленинграда','Победа над нацистской Германией','Начало холодной войны'], c:2},
+{q:'Кто написал «Слово о полку Игореве»?', a:['Пушкин','Ярослав Мудрый','Неизвестный автор XII в.','Нестор-летописец'], c:2},
+{q:'Когда принята Конституция РФ?', a:['1991','1992','1993','2000'], c:2},
+{q:'Что такое «Перестройка»?', a:['Война','Реформы Горбачёва','Коронация Путина','Распад СССР'], c:1},
+{q:'В каком году запущен первый спутник?', a:['1955','1957','1961','1969'], c:1},
+{q:'Какая битва стала «переломом» в ВОВ?', a:['Курская','Бородинская','Сталинградская','Невская'], c:2},
+{q:'Первое летописное упоминание Москвы — год:', a:['862','988','1147','1380'], c:2},
+{q:'Кто основал первую русскую печатную книгу?', a:['Ломоносов','Нестор','Иван Фёдоров','Кирилл'], c:2}
+],
+laws: [
+{q:'Когда принята Конституция РФ?', a:['1991','1993','1995','2000'], c:1},
+{q:'Какой документ нужен безвизовому иностранцу для работы?', a:['Виза','Патент','Загранпаспорт','Миграционная карта'], c:1},
+{q:'Сколько лет действует РВП?', a:['1 год','3 года','5 лет','10 лет'], c:1},
+{q:'Что такое ВНЖ?', a:['Временная виза','Вид на жительство','Въезд нерезидента','Временный найм жилья'], c:1},
+{q:'Минимальный срок проживания для гражданства (общий порядок):', a:['1 год','3 года','5 лет','10 лет'], c:2},
+{q:'В течение скольких дней нужно встать на миграционный учёт?', a:['3 рабочих','7 рабочих','10 рабочих','30 дней'], c:1},
+{q:'Граждане ЕАЭС работают в России:', a:['С патентом','Без разрешения','С разрешением','Только с ВНЖ'], c:1},
+{q:'МРОТ в 2024 году составляет:', a:['12 000 руб.','15 000 руб.','19 242 руб.','25 000 руб.'], c:2},
+{q:'Ставка НДФЛ для налогового резидента:', a:['9%','13%','20%','30%'], c:1},
+{q:'Штраф за нарушение режима пребывания (КоАП 18.8):', a:['500-1000 руб.','2000-5000 руб.','10000-50000 руб.','100000 руб.'], c:1},
+{q:'ВНЖ выдаётся на срок:', a:['1 год','3 года','5 лет','10 лет'], c:2},
+{q:'Нужен ли медосмотр для патента?', a:['Да','Нет','Только для Москвы','По желанию'], c:0},
+{q:'Статья Конституции о свободе труда:', a:['Ст.17','Ст.27','Ст.37','Ст.43'], c:2},
+{q:'Что означает «апостиль»?', a:['Нотариальный перевод','Международное удостоверение документа','Штраф','Регистрация'], c:1},
+{q:'Налог для самозанятых (НПД) при работе с физлицами:', a:['2%','4%','6%','13%'], c:1},
+{q:'Запрет въезда при нарушении сроков пребывания — срок:', a:['1 год','3 года','5 лет','10 лет'], c:1},
+{q:'Декларация 3-НДФЛ подаётся до:', a:['1 марта','30 апреля','31 декабря','15 июля'], c:1},
+{q:'Нормальная рабочая неделя по ТК РФ:', a:['36 часов','40 часов','44 часа','48 часов'], c:1},
+{q:'Работодатель уведомляет МВД о найме иностранца в течение:', a:['1 дня','3 дней','7 дней','30 дней'], c:1},
+{q:'Патент выдаётся максимально на:', a:['3 месяца','6 месяцев','1 год','3 года'], c:2}
+],
+cities: [
+{q:'Какой город основан Петром I в 1703 году?', a:['Москва','Казань','Санкт-Петербург','Новосибирск'], c:2},
+{q:'Столица Татарстана?', a:['Уфа','Казань','Самара','Омск'], c:1},
+{q:'Третий по населению город России?', a:['Екатеринбург','Нижний Новгород','Новосибирск','Казань'], c:2},
+{q:'Где проходит граница Европа-Азия?', a:['Москва','Екатеринбург','Казань','Сочи'], c:1},
+{q:'Первое упоминание Москвы — год?', a:['988','1147','1223','1380'], c:1},
+{q:'Какой город на Волге принял ЧМ-2018 по футболу?', a:['Саратов','Казань','Самара','Все три'], c:3},
+{q:'В каком городе находится Эрмитаж?', a:['Москва','Санкт-Петербург','Казань','Екатеринбург'], c:1},
+{q:'Мамаев курган — это в:', a:['Ростове-на-Дону','Волгограде','Самаре','Казани'], c:1},
+{q:'Какой город называют «космической столицей»?', a:['Королёв','Самара','Калуга','Байконур'], c:1},
+{q:'Первый русский город в Сибири?', a:['Омск','Новосибирск','Тюмень','Красноярск'], c:2},
+{q:'Столица Башкортостана?', a:['Казань','Пермь','Уфа','Оренбург'], c:2},
+{q:'Олимпийские игры 2014 прошли в:', a:['Москве','Сочи','Казани','Екатеринбурге'], c:1},
+{q:'«Родина-мать зовёт!» — где статуя?', a:['Москва','Санкт-Петербург','Волгоград','Новороссийск'], c:2},
+{q:'Какой город на купюре 10 рублей (часовня на скале)?', a:['Новосибирск','Красноярск','Омск','Иркутск'], c:1},
+{q:'Академгородок — научный центр находится в:', a:['Москве','Санкт-Петербурге','Новосибирске','Екатеринбурге'], c:2},
+{q:'Какой город основан в 1586 году как крепость и является «воротами в Сибирь»?', a:['Омск','Тюмень','Тобольск','Сургут'], c:1},
+{q:'Ельцин-центр — в каком городе?', a:['Москве','Санкт-Петербурге','Екатеринбурге','Казани'], c:2},
+{q:'Главный порт Тихоокеанского флота?', a:['Хабаровск','Владивосток','Находка','Магадан'], c:1},
+{q:'Город — родина Максима Горького:', a:['Казань','Нижний Новгород','Самара','Саратов'], c:1},
+{q:'Самый тёплый город России — субтропики:', a:['Краснодар','Ростов-на-Дону','Сочи','Крымск'], c:2}
+],
+mixed: [
+{q:'Сколько букв в русском алфавите?', a:['30','33','36','29'], c:1},
+{q:'В каком году принята Конституция РФ?', a:['1991','1993','1995','2000'], c:1},
+{q:'Столица России?', a:['Санкт-Петербург','Казань','Москва','Новосибирск'], c:2},
+{q:'Какой документ для работы безвизовому иностранцу?', a:['Виза','Патент','ВНЖ','Регистрация'], c:1},
+{q:'В каком году Крещение Руси?', a:['862','988','1147','1380'], c:1},
+{q:'МРОТ 2024:', a:['15 000','17 000','19 242','22 000'], c:2},
+{q:'Ставка НДФЛ для резидентов РФ:', a:['9%','13%','20%','30%'], c:1},
+{q:'Первый человек в космосе:', a:['Армстронг','Гагарин','Титов','Терешкова'], c:1},
+{q:'Когда распался СССР?', a:['1989','1990','1991','1993'], c:2},
+{q:'В каком городе Эрмитаж?', a:['Москва','Казань','Санкт-Петербург','Екатеринбург'], c:2},
+{q:'Правило: «ЖИ-ШИ пиши с...»', a:['Ы','И','Е','А'], c:1},
+{q:'Срок постановки на миграционный учёт:', a:['3 дня','7 рабочих дней','14 дней','30 дней'], c:1},
+{q:'Какое предложение правильное?', a:['Я живу в Москве.','Я живу в Москва.','Я живу на Москве.','Я живу Москве.'], c:0},
+{q:'Первый русский царь (официально):', a:['Иван III','Иван IV','Пётр I','Михаил Романов'], c:1},
+{q:'Срок ВНЖ:', a:['1 год','3 года','5 лет','10 лет'], c:2},
+{q:'Граждане ЕАЭС — без разрешения на работу. ЕАЭС — это:', a:['Европейский союз','Евразийский экономический союз','НАТО','СНГ'], c:1},
+{q:'Куликовская битва — год:', a:['1242','1380','1480','1547'], c:1},
+{q:'«Спасибо» — это:', a:['Привет','Пожалуйста','Спасибо','Извините'], c:2},
+{q:'Город Победы — где «Родина-мать»?', a:['Москва','Курск','Волгоград','Новороссийск'], c:2},
+{q:'Предлог для места «в» требует падежа:', a:['Родительного','Дательного','Предложного','Творительного'], c:2},
+{q:'Тест по русскому языку для патента — уровень:', a:['А0','А1','А2','В1'], c:1},
+{q:'Максимальный срок патента:', a:['6 месяцев','1 год','2 года','3 года'], c:1},
+{q:'Кто основал Москву?', a:['Владимир I','Ярослав Мудрый','Юрий Долгорукий','Иван III'], c:2},
+{q:'Слово «квитанция» означает:', a:['Заявление','Паспорт','Платёжный документ','Регистрация'], c:2},
+{q:'День Победы в России:', a:['8 мая','9 мая','22 июня','1 сентября'], c:1},
+{q:'Правильное написание:', a:['чашька','чашка','чяшка','чяшька'], c:1},
+{q:'Налог самозанятого при работе с физлицами:', a:['2%','4%','6%','13%'], c:1},
+{q:'Первый спутник запущен в:', a:['1955','1957','1960','1961'], c:1},
+{q:'Тюмень — первый русский город:', a:['На Волге','В Сибири','На Урале','На Кавказе'], c:1},
+{q:'Кто автор АК-47?', a:['Шилов','Макаров','Калашников','Мосин'], c:2}
+]
+};
+
+// ============================================================
+// 🧩 КЛАССЫ (Адаптированы под API, сохранён полный UI/UX из 1-го файла)
+// ============================================================
+class App {
+constructor() {
+this.currentUser = null;
+this.currentSection = '';
+this.dark = false;
+this.auth = new Auth(this);
+this.russian = new Russian(this);
+this.history = new HistoryModule(this);
+this.laws = new Laws(this);
+this.cities = new Cities(this);
+this.tests = new Tests(this);
+this.router = new Router(this);
+this.init();
+}
+async init() {
+if (api.token) {
+try {
+const saved = localStorage.getItem('rf_user');
+if (saved) { this.currentUser = JSON.parse(saved); this.renderNav(); }
+} catch { api.setToken(null); this.renderNavGuest(); }
+} else {
+this.renderNavGuest();
+}
+const dark = localStorage.getItem('rf_dark') === 'true';
+if (dark) { this.dark = true; document.documentElement.setAttribute('data-theme','dark'); }
+translator.init();
+}
+renderNav() {
+localStorage.setItem('rf_user', JSON.stringify(this.currentUser));
+document.getElementById('navControls').innerHTML = `
+<button class="icon-btn" onclick="app.toggleTheme()" title="Тема">🌙</button>
+<span style="color:var(--text-secondary);font-size:0.9rem;">👤 ${this.currentUser.email.split('@')[0]}</span>
+<button class="btn btn-secondary" onclick="app.logout()">Выход</button>`;
+this.router.navigate('dashboard');
+}
+renderNavGuest() {
+localStorage.removeItem('rf_user');
+document.getElementById('navControls').innerHTML = `
+<button class="icon-btn" onclick="app.toggleTheme()" title="Тема">🌙</button>
+<button class="btn btn-primary" onclick="app.showAuthModal()">Войти</button>`;
+}
+toggleTheme() {
+this.dark = !this.dark;
+document.documentElement.setAttribute('data-theme', this.dark ? 'dark' : '');
+localStorage.setItem('rf_dark', this.dark);
+}
+showAuthModal() { document.getElementById('authModal').classList.add('active'); }
+closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+async logout() {
+api.setToken(null);
+this.currentUser = null;
+this.renderNavGuest();
+this.router.navigate('');
+this.showNotification('До свидания!');
+}
+showNotification(msg) {
+const el = document.createElement('div');
+el.className = 'notification';
+el.textContent = msg;
+document.body.appendChild(el);
+setTimeout(() => el.remove(), 3000);
+}
+rerenderSection() {
+if (this.currentSection === 'russian') this.russian.render();
+else if (this.currentSection === 'history') this.history.render();
+else if (this.currentSection === 'laws') this.laws.render();
+else if (this.currentSection === 'cities') this.cities.render();
+else if (this.currentSection === 'tests') this.tests.render();
+}
+}
+
+class Router {
+constructor(app) { this.app = app; }
+navigate(section) {
+document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+document.querySelectorAll(".category-card").forEach(c => c.classList.remove("active"));
+this.app.currentSection = section;
+if (!section || section === '') {
+const s = this.app.currentUser ? 'dashboardSection' : 'welcomeSection';
+document.getElementById(s).classList.add('active');
+return;
+}
+const map = { russian:'russianSection', history:'historySection', laws:'lawsSection', cities:'citiesSection', tests:'testsSection', dashboard:'dashboardSection' };
+const catMap = { russian:'cat-russian', history:'cat-history', laws:'cat-laws', cities:'cat-cities', tests:'cat-tests' };
+if (map[section]) document.getElementById(map[section]).classList.add('active');
+if (catMap[section]) document.getElementById(catMap[section]).classList.add('active');
+if (section === 'russian') this.app.russian.render();
+if (section === 'history') this.app.history.render();
+if (section === 'laws') this.app.laws.render();
+if (section === 'cities') this.app.cities.render();
+if (section === 'tests') this.app.tests.render();
+window.scrollTo(0, 0);
+}
+}
+
+class Auth {
+constructor(app) { this.app = app; this.mode = 'register'; this.pendingEmail = ''; }
+toggleMode() {
+this.mode = this.mode === 'register' ? 'login' : 'register';
+document.querySelectorAll('#authModal [id^=step]').forEach(el => el.style.display = 'none');
+document.getElementById(this.mode === 'login' ? 'stepLogin' : 'stepEmail').style.display = 'block';
+}
+async sendCode() {
+const email = document.getElementById('authEmail').value.trim();
+if (!email || !email.includes('@')) return this.showError('emailError','Введите корректный email');
+try {
+this.pendingEmail = email;
+await api.sendCode(email);
+document.getElementById('stepEmail').style.display = 'none';
+document.getElementById('stepCode').style.display = 'block';
+this.app.showNotification('Код отправлен (проверьте консоль/API лог)');
+} catch(e) { this.showError('emailError', e.message); }
+}
+async verifyCode() {
+const code = document.getElementById('authCode').value.trim();
+try {
+await api.verifyCode(this.pendingEmail, code);
+document.getElementById('stepCode').style.display = 'none';
+document.getElementById('stepPassword').style.display = 'block';
+} catch(e) { this.showError('codeError', e.message); }
+}
+async register() {
+const pw = document.getElementById('authPassword').value;
+const pw2 = document.getElementById('authPasswordConfirm').value;
+if (pw.length < 8) return this.showError('passwordError','Минимум 8 символов');
+if (pw !== pw2) return this.showError('passwordConfirmError','Пароли не совпадают');
+try {
+const res = await api.register(this.pendingEmail, pw, document.getElementById('authCode').value.trim());
+api.setToken(res.token);
+this.app.currentUser = res.user;
+this.app.closeAuthModal();
+this.app.renderNav();
+this.app.showNotification('Добро пожаловать!');
+} catch(e) { this.showError('passwordError', e.message); }
+}
+async login() {
+const email = document.getElementById('loginEmail').value.trim();
+const pw = document.getElementById('loginPassword').value;
+try {
+const res = await api.login(email, pw);
+api.setToken(res.token);
+this.app.currentUser = res.user;
+this.app.closeAuthModal();
+this.app.renderNav();
+this.app.showNotification('Добро пожаловать!');
+} catch(e) { this.showError('loginError', e.message); }
+}
+showError(id, msg) {
+const el = document.getElementById(id);
+if (el) { el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 3000); }
+}
+}
+
+class Russian {
+constructor(app) {
+this.app = app;
+this.currentVocabCategory = 'basic';
+this.currentPhrasesCategory = 'emergency';
+this.progress = [];
+}
+async render() {
+await this.loadProgress();
+this.renderCategories();
+this.renderVocabTabs();
+this.renderPhrasesTabs();
+}
+async loadProgress() {
+if (!this.app.currentUser) { this.progress = []; return; }
+try {
+const res = await api.getProgress('russian');
+this.progress = res.progress || [];
+} catch { this.progress = []; }
+}
+async saveProgress() {
+if (!this.app.currentUser) return;
+try { await api.saveProgress('russian', this.progress); } catch(e) { console.error(e); }
+}
+showTab(tab) {
+document.querySelectorAll('#russianSection .tab-content').forEach(t => t.classList.remove('active'));
+document.querySelectorAll('#russianSection .tab').forEach(t => t.classList.remove('active'));
+const idMap = { categories: 'russianCategories', vocabulary: 'russianVocabulary', phrases: 'russianPhrases' };
+document.getElementById(idMap[tab]).classList.add('active');
+document.querySelectorAll('#russianSection .tab')[['categories','vocabulary','phrases'].indexOf(tab)].classList.add('active');
+if (tab === 'vocabulary') this.renderVocab(this.currentVocabCategory);
+if (tab === 'phrases') this.renderPhrases(this.currentPhrasesCategory);
+}
+renderCategories() {
+const grid = document.getElementById('russianGrid');
+grid.innerHTML = russianData.map(cat => {
+const done = this.progress.includes(cat.id);
+return `<div class="russian-category-card" onclick="app.russian.openLesson('${cat.id}')">
+<div class="russian-cat-icon">${cat.icon} ${done ? '✅' : ''}</div>
+<div class="russian-cat-title">${cat.title}</div>
+<div style="color:var(--text-secondary);font-size:0.85rem;">${cat.desc}</div>
+</div>`;
+}).join('');
+const total = Math.round((this.progress.length / russianData.length) * 100);
+document.getElementById('progressContainer').innerHTML = `
+<div class="progress-container">
+<div style="display:flex;justify-content:space-between;">
+<span>Прогресс</span>
+<span>${this.progress.length}/${russianData.length} (${total}%)</span>
+</div>
+<div class="progress-bar"><div class="progress-fill" style="width:${total}%"></div></div>
+</div>`;
+}
+renderVocabTabs() {
+const cats = { basic:'Базовые', verbs:'Глаголы', time:'Время', places:'Места', food:'Еда', official:'Документы/Офис' };
+document.getElementById('vocabCategoryTabs').innerHTML = Object.entries(cats).map(([k,v]) =>
+`<div class="vocab-tab ${k===this.currentVocabCategory?'active':''}" onclick="app.russian.renderVocab('${k}')">${v}</div>`
+).join('');
+this.renderVocab(this.currentVocabCategory);
+}
+renderVocab(cat) {
+this.currentVocabCategory = cat;
+document.querySelectorAll("#vocabCategoryTabs .vocab-tab").forEach((t,i) => t.classList.toggle("active", Object.keys({basic:'',verbs:'',time:'',places:'',food:'',official:''})[i] === cat));
+const words = vocabularyData[cat] || [];
+document.getElementById('vocabGrid').innerHTML = words.map(w => `
+<div class="vocab-card">
+<div class="vocab-word">${w.w}</div>
+<div class="vocab-transliteration">[${w.tr}]</div>
+<div class="vocab-translation">${w.t}</div>
+</div>`).join('');
+}
+searchVocab(q) {
+const all = Object.values(vocabularyData).flat();
+const filtered = all.filter(w => w.w.toLowerCase().includes(q.toLowerCase()) || w.t.toLowerCase().includes(q.toLowerCase()) || w.tr.toLowerCase().includes(q.toLowerCase()));
+document.getElementById('vocabGrid').innerHTML = filtered.map(w => `
+<div class="vocab-card">
+<div class="vocab-word">${w.w}</div>
+<div class="vocab-transliteration">[${w.tr}]</div>
+<div class="vocab-translation">${w.t}</div>
+</div>`).join('');
+}
+renderPhrasesTabs() {
+const cats = { emergency:'Экстренные', migration:'Миграция', daily:'Повседневные', work:'Работа' };
+document.getElementById('phrasesCategoryTabs').innerHTML = Object.entries(cats).map(([k,v]) =>
+`<div class="vocab-tab ${k===this.currentPhrasesCategory?'active':''}" onclick="app.russian.renderPhrases('${k}')">${v}</div>`
+).join('');
+this.renderPhrases(this.currentPhrasesCategory);
+}
+renderPhrases(cat) {
+this.currentPhrasesCategory = cat;
+document.querySelectorAll('#phrasesCategoryTabs .vocab-tab').forEach((t,i) => {
+t.classList.toggle('active', Object.keys({emergency:'',migration:'',daily:'',work:''})[i] === cat);
+});
+const phrases = phrasesData[cat] || [];
+document.getElementById('phrasesGrid').innerHTML = phrases.map(p => `
+<div class="vocab-card">
+<div class="vocab-word">${p.w}</div>
+<div class="vocab-transliteration">[${p.tr}]</div>
+<div class="vocab-translation">${p.t}</div>
+</div>`).join('');
+}
+openLesson(id) {
+if (!this.app.currentUser) { this.app.showAuthModal(); return; }
+const cat = russianData.find(x => x.id === id);
+if (!cat) return;
+const modal = document.createElement('div');
+modal.className = 'modal active';
+modal.id = 'lessonModal';
+modal.innerHTML = `
+<div class="modal-content lesson-modal-content">
+<h2 style="color:var(--primary);margin-bottom:1rem;">${cat.icon} ${cat.title}</h2>
+<div class="tabs" style="border-bottom:2px solid var(--border);margin-bottom:1.5rem;">
+<div class="tab active" onclick="app.russian.showLessonTab('theory')">Теория</div>
+<div class="tab" onclick="app.russian.showLessonTab('examples')">Примеры</div>
+<div class="tab" onclick="app.russian.showLessonTab('practice')">Практика</div>
+</div>
+<div id="lessonTheory" class="tab-content active">${cat.lesson.theory}</div>
+<div id="lessonExamples" class="tab-content">${cat.lesson.examples}</div>
+<div id="lessonPractice" class="tab-content">${cat.lesson.practice}</div>
+<div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;">
+<button class="btn btn-primary" onclick="app.russian.completeLesson('${id}')">✓ Завершить урок</button>
+<button class="btn btn-secondary" onclick="document.getElementById('lessonModal').remove()">Закрыть</button>
+</div>
+</div>`;
+document.body.appendChild(modal);
+modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+showLessonTab(tab) {
+document.querySelectorAll('#lessonModal .tab-content').forEach(t => t.classList.remove('active'));
+document.querySelectorAll('#lessonModal .tab').forEach(t => t.classList.remove('active'));
+const i = ['theory','examples','practice'].indexOf(tab);
+document.querySelectorAll('#lessonModal .tab-content')[i].classList.add('active');
+document.querySelectorAll('#lessonModal .tab')[i].classList.add('active');
+}
+checkLessonAnswer(el, selected, correct, catId) {
+const opts = el.parentElement.querySelectorAll('.answer-option');
+opts.forEach((o, i) => {
+o.classList.remove('selected','correct','wrong');
+if (i === correct) o.classList.add('correct');
+else if (i === selected) o.classList.add('wrong');
+});
+}
+async completeLesson(catId) {
+if (!this.app.currentUser) return;
+if (!this.progress.includes(catId)) { this.progress.push(catId); await this.saveProgress(); }
+document.getElementById('lessonModal').remove();
+this.renderCategories();
+this.app.showNotification('✅ Урок пройден!');
+}
+}
+
+class HistoryModule {
+constructor(app) { this.app = app; this.currentEra = 'all'; }
+render() { this.renderFilterTabs(); this.renderTimeline('all'); }
+renderFilterTabs() {
+document.getElementById('historyFilterTabs').innerHTML = Object.entries(historyEras).map(([k,v]) =>
+`<div class="history-tab ${k===this.currentEra?'active':''}" onclick="app.history.renderTimeline('${k}')">${v}</div>`
+).join('');
+}
+renderTimeline(era) {
+this.currentEra = era;
+document.querySelectorAll('.history-tab').forEach((t,i) => {
+t.classList.toggle('active', Object.keys(historyEras)[i] === era);
+});
+const events = era === 'all' ? historyData : historyData.filter(e => e.era === era);
+document.getElementById('timeline').innerHTML = events.map(e => `
+<div class="timeline-event" onclick="app.history.showDetail(${e.year},'${e.title.replace(/'/g,"\\'")}')">
+<div class="timeline-year">${e.year}</div>
+<div class="timeline-title">${e.title}</div>
+<div class="timeline-desc">${e.ruler}</div>
+</div>`).join('');
+document.getElementById('eventDetail').style.display = 'none';
+}
+showDetail(year, title) {
+const e = historyData.find(x => x.year === year && x.title === title) || historyData.find(x => x.year === year);
+const ruler = rulersData[e.ruler];
+const detail = document.getElementById('eventDetail');
+detail.style.display = 'block';
+detail.innerHTML = `
+<div class="event-detail">
+<h2 style="color:var(--primary);margin-bottom:1rem;">${e.year} — ${e.title}</h2>
+<p><strong>Эпоха:</strong> ${historyEras[e.era] || e.era}</p>
+<p style="margin-top:0.5rem;"><strong>Карта:</strong> ${e.map}</p>
+${ruler ? `
+<div class="ruler-card">
+<div class="ruler-portrait">${ruler.portrait}</div>
+<div class="ruler-info">
+<h4>${e.ruler} (${e.years})</h4>
+<p>${ruler.bio}</p>
+<ul class="ruler-achievements">${ruler.achievements.map(a => `<li>${a}</li>`).join('')}</ul>
+</div>
+</div>` :
+`<p style="margin:1rem 0;"><strong>${e.ruler}</strong> (${e.years})</p>`}
+<p style="margin-top:1rem;">${e.desc}</p>
+</div>`;
+detail.scrollIntoView({ behavior: 'smooth' });
+}
+}
+
+class Laws {
+constructor(app) { this.app = app; this.currentFilter = 'all'; }
+render() { this.filter('all'); }
+filter(category) {
+this.currentFilter = category;
+document.querySelectorAll('#lawsSection .tab').forEach(t => t.classList.remove('active'));
+const idx = ['all','иностранцы','конституция','миграция','труд','налоги'].indexOf(category);
+const tabs = document.querySelectorAll('#lawsSection .tab');
+if (tabs[idx]) tabs[idx].classList.add('active');
+const laws = category === 'all' ? lawsData : lawsData.filter(l => l.category === category || l.category === 'all');
+this.renderLaws(laws);
+}
+renderLaws(laws) {
+document.getElementById('lawsGrid').innerHTML = laws.map(l => `
+<div class="law-card">
+<div class="law-number">${l.number}</div>
+<div class="law-title">${l.title}</div>
+<div class="law-content">${l.content}</div>
+</div>`).join('');
+}
+search(query) {
+const q = query.toLowerCase();
+const filtered = lawsData.filter(l => l.title.toLowerCase().includes(q) || l.number.toLowerCase().includes(q) || l.content.toLowerCase().includes(q));
+this.renderLaws(filtered);
+}
+}
+
+class Cities {
+constructor(app) { this.app = app; }
+render() { this.renderGrid(citiesData); }
+renderGrid(cities) {
+document.getElementById('citiesGrid').innerHTML = cities.map(c => `
+<div class="city-card" onclick="app.cities.showDetail(${c.id})">
+<div class="city-image">
+<div style="font-size:5rem;z-index:1;">${c.emoji}</div>
+<div class="city-image-overlay">${c.name}</div>
+</div>
+<div class="city-info">
+<div class="city-name">${c.name}</div>
+<div class="city-meta">👥 ${c.pop} · 📅 осн. ${c.founded} г.</div>
+</div>
+</div>`).join('');
+document.getElementById('cityDetail').style.display = 'none';
+}
+search(query) {
+const q = query.toLowerCase();
+this.renderGrid(citiesData.filter(c => c.name.toLowerCase().includes(q)));
+}
+showDetail(id) {
+const c = citiesData.find(x => x.id === id);
+const detail = document.getElementById('cityDetail');
+detail.style.display = 'block';
+const sights = c.sights.split(', ').map(s => `
+<div class="city-sight-item">
+<span class="city-sight-icon">📍</span>
+<span>${s}</span>
+</div>`).join('');
+detail.innerHTML = `
+<button class="btn btn-secondary back-btn" onclick="app.cities.render();window.scrollTo(0,0)">← Назад к городам</button>
+<div class="city-detail-container">
+<div class="city-detail-header">
+<div style="font-size:10rem;opacity:0.3;position:absolute;">${c.emoji}</div>
+<div class="city-detail-header-overlay">
+<div class="city-detail-title">${c.name}</div>
+<div class="city-detail-subtitle">Основан: ${c.founded} г. · ${c.pop}</div>
+</div>
+</div>
+<div class="city-detail-content">
+<div class="city-stats-grid">
+<div class="city-stat-card"><div class="city-stat-icon">👥</div><div class="city-stat-label">Население</div><div class="city-stat-value">${c.pop}</div></div>
+<div class="city-stat-card"><div class="city-stat-icon">📐</div><div class="city-stat-label">Площадь</div><div class="city-stat-value">${c.area}</div></div>
+<div class="city-stat-card"><div class="city-stat-icon">🌡️</div><div class="city-stat-label">Климат</div><div class="city-stat-value">${c.climate.split('.')[0]}</div></div>
+<div class="city-stat-card"><div class="city-stat-icon">📅</div><div class="city-stat-label">Основан</div><div class="city-stat-value">${c.founded} г.</div></div>
+</div>
+<div class="city-section"><div class="city-section-title">📜 История</div><div class="city-section-content">${c.history}</div></div>
+<div class="city-section"><div class="city-section-title">🧠 Менталитет</div><div class="city-section-content">${c.mentality}</div></div>
+<div class="city-section"><div class="city-section-title">🎭 Традиции</div><div class="city-section-content">${c.traditions}</div></div>
+<div class="city-section"><div class="city-section-title">🏛️ Достопримечательности</div><div class="city-sights-list">${sights}</div></div>
+</div>
+</div>`;
+detail.scrollIntoView({ behavior: 'smooth' });
+}
+}
+
+class Tests {
+constructor(app) { this.app = app; this.currentTest = null; this.answers = []; this.certs = []; }
+async render() { await this.loadCertificates(); this.showCertificates(); }
+async loadCertificates() {
+if (!this.app.currentUser) { this.certs = []; return; }
+try {
+this.certs = await api.getCertificates();
+} catch { this.certs = []; }
+}
+start(type) {
+if (!this.app.currentUser) { this.app.showAuthModal(); return; }
+this.currentTest = type;
+const questions = testsData[type];
+this.answers = new Array(questions.length).fill(null);
+document.getElementById('testsList').style.display = 'none';
+document.getElementById('testContainer').style.display = 'block';
+document.getElementById('testContent').innerHTML = questions.map((q, i) => `
+<div class="question">
+<div class="question-text">${i+1}. ${q.q}</div>
+<div class="answers">${q.a.map((a, ai) => `
+<div class="answer-option" onclick="app.tests.select(${i},${ai})">
+<span>${ai+1}.</span><span>${a}</span>
+</div>`).join('')}
+</div>
+</div>`).join('');
+}
+select(qi, ai) {
+this.answers[qi] = ai;
+document.querySelectorAll('.question')[qi].querySelectorAll('.answer-option').forEach((o, i) => {
+o.classList.toggle('selected', i === ai);
+});
+}
+submit() {
+const unanswered = this.answers.findIndex(a => a === null);
+if (unanswered !== -1) {
+this.app.showNotification(`Ответьте на вопрос ${unanswered+1}`);
+document.querySelectorAll(".question")[unanswered].scrollIntoView({ behavior: "smooth" });
+return;
+}
+let correct = 0;
+testsData[this.currentTest].forEach((q, i) => { if (this.answers[i] === q.c) correct++; });
+const pct = Math.round((correct / testsData[this.currentTest].length) * 100);
+document.querySelectorAll(".question").forEach((qEl, i) => {
+const opts = qEl.querySelectorAll(".answer-option");
+opts.forEach((o, ai) => {
+const c = testsData[this.currentTest][i].c;
+if (ai === c) o.classList.add("correct");
+else if (ai === this.answers[i]) o.classList.add('wrong');
+});
+});
+setTimeout(async () => {
+if (pct >= 60) await this.createCertificate(this.currentTest, pct);
+alert(`Результат: ${correct}/${testsData[this.currentTest].length} (${pct}%)
+${pct>=60?'🎉 Сертификат получен!':'❌ Для получения сертификата необходимо набрать минимум 60 %'}`);
+document.getElementById('testContainer').style.display = 'none';
+document.getElementById('testsList').style.display = 'grid';
+this.currentTest = null;
+this.render();
+}, 1500);
+}
+cancel() {
+document.getElementById('testContainer').style.display = 'none';
+document.getElementById('testsList').style.display = 'grid';
+this.currentTest = null;
+}
+async createCertificate(type, score) {
+const cert = { id: Date.now(), type, score, date: new Date().toLocaleDateString('ru-RU'), number: 'RF-' + Date.now().toString(36).toUpperCase() };
+try {
+await api.addCertificate(cert);
+this.certs.unshift(cert);
+} catch(e) { console.error('Failed to save cert:', e); }
+}
+showCertificates() {
+const grid = document.getElementById('certificatesGrid');
+const icons = { russian:'📚', history:'🏛️', laws:'⚖️', cities:'🏙️', mixed:'🎯' };
+const names = { russian:'Русский язык', history:'История', laws:'Законы', cities:'Города', mixed:'Общий тест' };
+if (!this.certs.length) {
+grid.innerHTML = '<p style="color:var(--text-secondary);">Сертификатов пока нет. Пройдите тест на 60%+</p>';
+return;
+}
+grid.innerHTML = this.certs.map(c => `
+<div class="category-card">
+<div class="category-icon">${icons[c.type] || '🎓'}</div>
+<div class="category-title">${names[c.type] || c.type}</div>
+<div class="category-desc">Результат: ${c.score}%<br>${c.date}<br><small>${c.number}</small></div>
+</div>`).join('');
+}
+}
+
+// Инициализация
+const app = new App();
+</script>
+</body>
+</html>
