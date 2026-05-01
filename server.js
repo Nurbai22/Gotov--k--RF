@@ -14,7 +14,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_key';
 app.use(cors());
 app.use(express.json());
 
-// 🔥 ВАЖНО: Раздаём статические файлы (HTML, CSS, JS)
+// 🔥 Раздаём статические файлы
 app.use(express.static('.'));
 
 // 📧 NODemailer
@@ -90,6 +90,7 @@ db.serialize(() => {
   )`);
 });
 
+// Middleware авторизации
 const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ error: 'Требуется авторизация' });
@@ -101,19 +102,24 @@ const authenticate = (req, res, next) => {
   });
 };
 
-// API Routes
+// 🔹 Отправка кода — ИСПРАВЛЕНО: добавлена закрывающая скобка }
 app.post('/api/auth/send-code', async (req, res) => {
   const { email } = req.body;
+  
+  // Проверка email
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Введите корректный email' });
+  } // ← ✅ ЗДЕСЬ БЫЛА ОШИБКА: пропущена эта скобка
+  
   const code = Math.floor(100000 + Math.random() * 900000).toString();
-    
   const expiresAt = Date.now() + 600000;
+  
   try {
     await new Promise((resolve, reject) => {
       db.run('INSERT OR REPLACE INTO verification_codes VALUES (?, ?, ?)',
         [email, code, expiresAt], (err) => err ? reject(err) : resolve());
     });
+    
     await sendVerificationEmail(email, code);
     console.log(`✉️ Код отправлен на ${email}`);
     res.json({ message: 'Код отправлен на email' });
@@ -124,6 +130,7 @@ app.post('/api/auth/send-code', async (req, res) => {
   }
 });
 
+// 🔹 Проверка кода
 app.post('/api/auth/verify-code', (req, res) => {
   const { email, code } = req.body;
   db.get('SELECT * FROM verification_codes WHERE email = ? AND code = ?', [email, code], (err, row) => {
@@ -135,10 +142,12 @@ app.post('/api/auth/verify-code', (req, res) => {
   });
 });
 
+// 🔹 Регистрация
 app.post('/api/auth/register', async (req, res) => {
   const { email, password, code } = req.body;
   if (!email || !password || !code) return res.status(400).json({ error: 'Заполните все поля' });
   if (password.length < 8) return res.status(400).json({ error: 'Минимум 8 символов' });
+  
   db.get('SELECT * FROM verification_codes WHERE email = ? AND code = ?', [email, code], async (err, row) => {
     if (err || !row || row.expires_at < Date.now()) {
       return res.status(400).json({ error: 'Неверный код' });
@@ -156,6 +165,7 @@ app.post('/api/auth/register', async (req, res) => {
   });
 });
 
+// 🔹 Вход
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   db.get('SELECT * FROM users WHERE email = ?', [email], async (err, user) => {
@@ -167,6 +177,7 @@ app.post('/api/auth/login', async (req, res) => {
   });
 });
 
+// 🔹 Прогресс
 app.get('/api/user/progress/:section', authenticate, (req, res) => {
   db.get('SELECT progress FROM user_progress WHERE user_id = ? AND section = ?', 
     [req.user.id, req.params.section], (err, row) => {
@@ -181,6 +192,7 @@ app.put('/api/user/progress/:section', authenticate, (req, res) => {
     });
 });
 
+// 🔹 Сертификаты
 app.get('/api/user/certificates', authenticate, (req, res) => {
   db.all('SELECT * FROM certificates WHERE user_id = ? ORDER BY created_at DESC', 
     [req.user.id], (err, certs) => res.json(certs || []));
@@ -192,12 +204,11 @@ app.post('/api/user/certificates', authenticate, (req, res) => {
     function(err) { res.status(201).json({ id: this.lastID }); });
 });
 
-// 🔥 ВАЖНО: Главная страница — отдаём index.html
+// 🔥 Главная страница
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 🔥 ВАЖНО: Все остальные маршруты — тоже index.html (для SPA)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
