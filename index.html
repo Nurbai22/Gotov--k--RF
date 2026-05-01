@@ -392,7 +392,9 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
 // 🌐 API КЛИЕНТ (Интегрирован из 2-го файла, заменяет localStorage для данных пользователя)
 // ============================================================
 const api = {
-  baseURL: '/api',  // ← Относительный путь
+  baseURL: window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000/api'
+    : 'https://gotov-k-rf-1.onrender.com/api',  // ← СТАЛО (ваш backend URL)
   // ...
 };
 setToken(t) { this.token = t; t ? localStorage.setItem('rf_token', t) : localStorage.removeItem('rf_token'); },
