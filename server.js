@@ -106,7 +106,6 @@ app.post('/api/auth/send-code', async (req, res) => {
   const { email } = req.body;
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Введите корректный email' });
-  
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   const expiresAt = Date.now() + 600000;
   try {
