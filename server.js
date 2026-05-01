@@ -100,7 +100,6 @@ const authenticate = (req, res, next) => {
     next();
   });
 };
-
 // API Routes
 app.post('/api/auth/send-code', async (req, res) => {
   const { email } = req.body;
