@@ -391,7 +391,9 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
 // ============================================================
 // 🌐 API КЛИЕНТ (Интегрирован из 2-го файла, заменяет localStorage для данных пользователя)
 // ============================================================
-
+const api = {
+baseURL: 'http://localhost:3000/api',
+token: localStorage.getItem('rf_token') || null,
 setToken(t) { this.token = t; t ? localStorage.setItem('rf_token', t) : localStorage.removeItem('rf_token'); },
 async request(ep, opt = {}) {
 try {
